@@ -54,8 +54,7 @@ public class JWTTokenProviderTest extends AbstractGHAppInstallationTest {
         // authorization header check is custom
         snapshotNotAllowed();
 
-        JWTTokenProvider jwtTokenProvider = new JWTTokenProvider(TEST_APP_ID_2,
-                new File(this.getClass().getResource(PRIVATE_KEY_FILE_APP_2).getFile()));
+        JWTTokenProvider jwtTokenProvider = (JWTTokenProvider) jwtProvider2;
         GitHub gh = getGitHubBuilder().withEndpoint(mockGitHub.apiServer().baseUrl())
                 .withAuthorizationProvider(jwtTokenProvider)
                 .build();
@@ -97,8 +96,7 @@ public class JWTTokenProviderTest extends AbstractGHAppInstallationTest {
         // This test was accurate when recorded but it doesn't verify that the jwt token is different
         // or accurate in anyway.
 
-        JWTTokenProvider jwtTokenProvider = new JWTTokenProvider(TEST_APP_ID_2,
-                new File(this.getClass().getResource(PRIVATE_KEY_FILE_APP_2).getFile())) {
+        JWTTokenProvider jwtTokenProvider = new JWTTokenProvider(TEST_APP_ID_2, privateKeyPEM) {
 
             @Override
             Instant getIssuedAt(Instant now) {

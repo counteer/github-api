@@ -39,7 +39,7 @@ public class AbstractGHAppInstallationTest extends AbstractGitHubWireMockTest {
     private static String TEST_APP_ID_2 = "83009";
     private static String TEST_APP_ID_3 = "89368";
 
-    private static String privateKeyPEM;
+    protected static String privateKeyPEM;
 
     static {
         try {
