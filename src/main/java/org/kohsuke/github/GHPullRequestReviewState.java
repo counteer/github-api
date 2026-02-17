@@ -37,16 +37,12 @@ public enum GHPullRequestReviewState {
      * @return the GH pull request review event
      */
     GHPullRequestReviewEvent toEvent() {
-        switch (this) {
-            case PENDING :
-                return GHPullRequestReviewEvent.PENDING;
-            case APPROVED :
-                return GHPullRequestReviewEvent.APPROVE;
-            case CHANGES_REQUESTED :
-                return GHPullRequestReviewEvent.REQUEST_CHANGES;
-            case COMMENTED :
-                return GHPullRequestReviewEvent.COMMENT;
-        }
-        return null;
+        return switch (this) {
+            case PENDING -> GHPullRequestReviewEvent.PENDING;
+            case APPROVED -> GHPullRequestReviewEvent.APPROVE;
+            case CHANGES_REQUESTED -> GHPullRequestReviewEvent.REQUEST_CHANGES;
+            case COMMENTED -> GHPullRequestReviewEvent.COMMENT;
+            default -> null;
+        };
     }
 }

@@ -1078,8 +1078,7 @@ public class GHRepository extends GHObject {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GHRepository) {
-            GHRepository that = (GHRepository) obj;
+        if (obj instanceof GHRepository that) {
             return this.getOwnerName().equals(that.getOwnerName()) && this.name.equals(that.name);
         }
         return false;

@@ -148,18 +148,12 @@ class GitHubClient {
 
     // This implements the exact same rules as the ones applied in jdk.internal.net.http.RedirectFilter
     private static String getRedirectedMethod(int statusCode, String originalMethod) {
-        switch (statusCode) {
-            case HTTP_MOVED_PERM :
-            case HTTP_MOVED_TEMP :
-                return originalMethod.equals("POST") ? "GET" : originalMethod;
-            case 303 :
-                return "GET";
-            case 307 :
-            case 308 :
-                return originalMethod;
-            default :
-                return originalMethod;
-        }
+        return switch (statusCode) {
+            case HTTP_MOVED_PERM, HTTP_MOVED_TEMP -> originalMethod.equals("POST") ? "GET" : originalMethod;
+            case 303 -> "GET";
+            case 307, 308 -> originalMethod;
+            default -> originalMethod;
+        };
     }
 
     private static URI getRedirectedUri(URI requestUri, GitHubConnectorResponse connectorResponse) throws IOException {
@@ -181,8 +175,8 @@ class GitHubClient {
             @Nonnull GitHubConnectorRequest connectorRequest,
             @CheckForNull GitHubConnectorResponse connectorResponse) {
         // If we're already throwing a GHIOException, pass through
-        if (e instanceof GHIOException) {
-            return e;
+        if (e instanceof GHIOException ghioe) {
+            return ghioe;
         }
 
         int statusCode = -1;

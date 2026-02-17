@@ -88,7 +88,7 @@ public class GHRef extends GitHubInteractiveObject {
             // If the parse exception is due to the above returning an array instead of a single ref
             // that means the individual ref did not exist. Handled by result check below.
             // Otherwise, rethrow.
-            if (!(e.getCause() instanceof JsonMappingException)) {
+            if (!(e.getCause() instanceof JsonMappingException jme)) {
                 throw e;
             }
         }

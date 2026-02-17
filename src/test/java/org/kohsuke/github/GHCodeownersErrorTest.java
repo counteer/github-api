@@ -40,7 +40,11 @@ public class GHCodeownersErrorTest extends AbstractGitHubWireMockTest {
         assertThat(firstError.getSuggestion(),
                 is("make sure @nonexistent-user exists and has write access to the repository"));
         assertThat(firstError.getMessage(),
-                is("Unknown owner on line 1: make sure @nonexistent-user exists and has write access to the repository\n\n  * @nonexistent-user # Deliberate error to test response to repo.listCodeownersErrors()\n    ^"));
+                is("""
+                   Unknown owner on line 1: make sure @nonexistent-user exists and has write access to the repository
+
+                     * @nonexistent-user # Deliberate error to test response to repo.listCodeownersErrors()
+                       ^"""));
         assertThat(firstError.getPath(), is(".github/CODEOWNERS"));
     }
 
