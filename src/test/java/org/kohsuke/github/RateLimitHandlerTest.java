@@ -2,7 +2,7 @@ package org.kohsuke.github;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.connector.GitHubConnectorResponse;
 
 import java.io.IOException;
@@ -210,3 +210,4 @@ public class RateLimitHandlerTest extends AbstractGitHubWireMockTest {
     }
 
 }
+

@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -63,3 +63,4 @@ public class GHPersonTest extends AbstractGitHubWireMockTest {
         return getRepository(gitHub);
     }
 }
+

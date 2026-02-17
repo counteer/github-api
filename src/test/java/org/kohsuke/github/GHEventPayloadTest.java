@@ -1,7 +1,7 @@
 package org.kohsuke.github;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.kohsuke.github.GHCheckRun.Conclusion;
 import org.kohsuke.github.GHCheckRun.Status;
 import org.kohsuke.github.GHProjectsV2Item.ContentType;
@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -33,8 +33,8 @@ import static org.junit.Assert.assertThrows;
 public class GHEventPayloadTest extends AbstractGitHubWireMockTest {
 
     /** The payload. */
-    @Rule
-    public final PayloadRule payload = new PayloadRule(".json");
+    @RegisterExtension
+    public final PayloadExtension payload = new PayloadExtension(".json");
 
     /**
      * Instantiates a new GH event payload test.
@@ -1930,3 +1930,5 @@ public class GHEventPayloadTest extends AbstractGitHubWireMockTest {
         return checkSuite;
     }
 }
+
+

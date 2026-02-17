@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A response of GraphQL.
@@ -66,11 +64,8 @@ public class GHGraphQLResponse<T> {
     @JsonCreator
     @SuppressFBWarnings(value = { "EI_EXPOSE_REP2" }, justification = "Spotbugs also doesn't like this")
     public GHGraphQLResponse(@JsonProperty("data") T data, @JsonProperty("errors") List<GraphQLError> errors) {
-        if (errors == null) {
-            errors = Collections.emptyList();
-        }
         this.data = data;
-        this.errors = Collections.unmodifiableList(errors);
+        this.errors = (errors == null) ? List.of() : List.copyOf(errors);
     }
 
     /**
@@ -92,7 +87,7 @@ public class GHGraphQLResponse<T> {
      * @return GraphQL error messages from Github Response. Empty list when no errors occurred.
      */
     public List<String> getErrorMessages() {
-        return errors.stream().map(GraphQLError::getMessage).collect(Collectors.toList());
+        return errors.stream().map(GraphQLError::getMessage).toList();
     }
 
     /**

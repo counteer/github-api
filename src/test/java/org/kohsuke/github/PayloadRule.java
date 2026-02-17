@@ -1,9 +1,6 @@
 package org.kohsuke.github;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,7 +19,7 @@ import javax.annotation.Nonnull;
  *
  * @author Stephen Connolly
  */
-public class PayloadRule implements TestRule {
+public class PayloadRule {
 
     private String resourceName;
 
@@ -49,21 +46,7 @@ public class PayloadRule implements TestRule {
      *            the description
      * @return the statement
      */
-    public Statement apply(final Statement base, final Description description) {
-        return new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                Payload payload = description.getAnnotation(Payload.class);
-                resourceName = payload == null ? description.getMethodName() : payload.value();
-                testClass = description.getTestClass();
-                try {
-                    base.evaluate();
-                } finally {
-                    resourceName = null;
-                }
-            }
-        };
-    }
+    // Deprecated JUnit 4 Rule API removed. This class is retained for source compatibility only.
 
     /**
      * As bytes.

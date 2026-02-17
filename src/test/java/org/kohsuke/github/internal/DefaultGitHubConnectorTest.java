@@ -1,7 +1,7 @@
 package org.kohsuke.github.internal;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.AbstractGitHubWireMockTest;
 import org.kohsuke.github.GitHubBuilder;
 import org.kohsuke.github.connector.GitHubConnector;
@@ -55,3 +55,5 @@ public class DefaultGitHubConnectorTest extends AbstractGitHubWireMockTest {
         }).build();
     }
 }
+
+

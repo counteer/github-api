@@ -1,9 +1,9 @@
 package org.kohsuke.github;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -38,8 +38,8 @@ public class GHContentIntegrationTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
-    @After
+    @BeforeEach
+    @AfterEach
     public void cleanup() throws Exception {
         if (mockGitHub.isUseProxy()) {
             repo = getNonRecordingGitHub().getRepository("hub4j-test-org/GHContentIntegrationTest");
@@ -59,7 +59,7 @@ public class GHContentIntegrationTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         repo = gitHub.getRepository("hub4j-test-org/GHContentIntegrationTest");
     }
@@ -522,3 +522,5 @@ public class GHContentIntegrationTest extends AbstractGitHubWireMockTest {
     }
 
 }
+
+

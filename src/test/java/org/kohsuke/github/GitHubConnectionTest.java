@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.authorization.AuthorizationProvider;
 import org.kohsuke.github.authorization.ImmutableAuthorizationProvider;
 import org.kohsuke.github.authorization.UserAuthorizationProvider;
@@ -420,3 +420,4 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
         properties.store(new FileOutputStream(propertyFile), "");
     }
 }
+

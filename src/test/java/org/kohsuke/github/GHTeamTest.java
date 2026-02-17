@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHTeam.Privacy;
 import org.kohsuke.github.GHTeam.Role;
 
@@ -12,7 +12,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.kohsuke.github.ExternalGroupsTestingSupport.*;
 import static org.kohsuke.github.ExternalGroupsTestingSupport.Matchers.isExternalGroupSummary;
 
@@ -441,3 +441,5 @@ public class GHTeamTest extends AbstractGitHubWireMockTest {
     }
 
 }
+
+

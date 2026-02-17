@@ -24,8 +24,8 @@
 
 package org.kohsuke.github;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHCheckRun.Status;
 
 import java.io.IOException;
@@ -260,3 +260,5 @@ public class GHCheckRunBuilderTest extends AbstractGHAppInstallationTest {
         return getAppInstallationWithToken(jwtProvider3.getEncodedAuthorization()).root();
     }
 }
+
+

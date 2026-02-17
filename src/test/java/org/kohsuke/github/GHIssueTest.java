@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -102,8 +102,8 @@ public class GHIssueTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
-    @After
+    @BeforeEach
+    @AfterEach
     public void cleanUp() throws Exception {
         // Cleanup is only needed when proxying
         if (!mockGitHub.isUseProxy()) {
@@ -366,3 +366,4 @@ public class GHIssueTest extends AbstractGitHubWireMockTest {
     }
 
 }
+

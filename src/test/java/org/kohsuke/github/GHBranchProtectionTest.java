@@ -1,7 +1,7 @@
 package org.kohsuke.github;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHBranchProtection.AllowDeletions;
 import org.kohsuke.github.GHBranchProtection.AllowForcePushes;
 import org.kohsuke.github.GHBranchProtection.AllowForkSyncing;
@@ -42,7 +42,7 @@ public class GHBranchProtectionTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         repo = getTempRepository();
         branch = repo.getBranch(BRANCH);
@@ -238,3 +238,4 @@ public class GHBranchProtectionTest extends AbstractGitHubWireMockTest {
         assertThat(requiredLinearHistory.isEnabled(), is(true));
     }
 }
+

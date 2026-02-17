@@ -78,7 +78,7 @@ public class GHTeamChanges {
          * @return the boolean
          */
         public boolean hadAdminAccess() {
-            return from != null && from.admin;
+            return from != null && from.admin();
         }
 
         /**
@@ -87,7 +87,7 @@ public class GHTeamChanges {
          * @return the boolean
          */
         public boolean hadPullAccess() {
-            return from != null && from.pull;
+            return from != null && from.pull();
         }
 
         /**
@@ -96,7 +96,7 @@ public class GHTeamChanges {
          * @return the boolean
          */
         public boolean hadPushAccess() {
-            return from != null && from.push;
+            return from != null && from.push();
         }
     }
     /**

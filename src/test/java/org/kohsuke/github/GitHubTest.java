@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
 import com.google.common.collect.Iterables;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.example.dataobject.ReadOnlyObjects;
 
 import java.io.IOException;
@@ -437,3 +437,5 @@ public class GitHubTest extends AbstractGitHubWireMockTest {
         }
     }
 }
+
+

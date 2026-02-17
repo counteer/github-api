@@ -1,7 +1,7 @@
 package org.kohsuke.github;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.connector.GitHubConnectorResponse;
 
 import java.net.MalformedURLException;
@@ -19,7 +19,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -455,3 +455,5 @@ public class GitHubStaticTest extends AbstractGitHubWireMockTest {
     }
 
 }
+
+

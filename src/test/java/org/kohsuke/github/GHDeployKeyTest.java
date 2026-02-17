@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -85,3 +85,4 @@ public class GHDeployKeyTest extends AbstractGitHubWireMockTest {
         return getRepository(gitHub);
     }
 }
+

@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assume.assumeFalse;
@@ -31,7 +31,7 @@ public class WireMockStatusReporterTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore("Can't run this as WireMock will report failure after the test method completes.")
+    @Disabled("Can't run this as WireMock will report failure after the test method completes.")
     @Test
     public void BasicBehaviors_whenNotProxying() throws Exception {
         snapshotNotAllowed();
@@ -170,7 +170,7 @@ public class WireMockStatusReporterTest extends AbstractGitHubWireMockTest {
     /**
      * When snapshot ensure record to expected location.
      */
-    @Ignore("Not implemented yet")
+    @Disabled("Not implemented yet")
     @Test
     public void whenSnapshot_EnsureRecordToExpectedLocation() {
         assumeTrue("Test only valid when Snapshotting (-Dtest.github.takeSnapshot to enable)",
@@ -178,3 +178,4 @@ public class WireMockStatusReporterTest extends AbstractGitHubWireMockTest {
 
     }
 }
+

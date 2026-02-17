@@ -7,11 +7,6 @@ import com.github.tomakehurst.wiremock.core.Options;
 import com.github.tomakehurst.wiremock.extension.Extension;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.github.tomakehurst.wiremock.verification.NearMiss;
-import org.junit.rules.MethodRule;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
 
 import java.io.File;
 import java.util.HashMap;
@@ -24,7 +19,7 @@ import java.util.Map;
  *
  * @author Liam Newman
  */
-public class WireMockMultiServerRule implements MethodRule, TestRule {
+public class WireMockMultiServerRule {
 
     private boolean failOnUnmatchedRequests;
     private String methodName = null;
@@ -72,9 +67,6 @@ public class WireMockMultiServerRule implements MethodRule, TestRule {
      *            the description
      * @return the statement
      */
-    public Statement apply(Statement base, Description description) {
-        return this.apply(base, description.getMethodName());
-    }
 
     /**
      * Apply.
@@ -87,9 +79,6 @@ public class WireMockMultiServerRule implements MethodRule, TestRule {
      *            the target
      * @return the statement
      */
-    public Statement apply(final Statement base, FrameworkMethod method, Object target) {
-        return this.apply(base, method.getName());
-    }
 
     /**
      * Gets the method name.
@@ -100,27 +89,6 @@ public class WireMockMultiServerRule implements MethodRule, TestRule {
         return methodName;
     }
 
-    private Statement apply(final Statement base, final String methodName) {
-        return new Statement() {
-            public void evaluate() throws Throwable {
-                WireMockMultiServerRule.this.methodName = methodName;
-                initializeServers();
-                WireMock.configureFor("localhost", WireMockMultiServerRule.this.servers.get("default").port());
-
-                try {
-                    WireMockMultiServerRule.this.before();
-                    base.evaluate();
-                    WireMockMultiServerRule.this.checkForUnmatchedRequests();
-                } finally {
-                    WireMockMultiServerRule.this.after();
-                    WireMockMultiServerRule.this.stop();
-                    WireMockMultiServerRule.this.methodName = null;
-                    WireMockMultiServerRule.this.servers.clear();
-                }
-
-            }
-        };
-    }
 
     private void checkForUnmatchedRequests() {
         servers.values().forEach(server -> checkForUnmatchedRequests(server));
@@ -216,4 +184,20 @@ public class WireMockMultiServerRule implements MethodRule, TestRule {
     protected void initializeServers() {
     }
 
+    // JUnit 5 migration helpers: simulate the JUnit 4 Rule lifecycle per test method
+    public void startForMethod(String methodName) {
+        this.methodName = methodName;
+        initializeServers();
+        com.github.tomakehurst.wiremock.client.WireMock.configureFor("localhost",
+                this.servers.get("default").port());
+        before();
+    }
+
+    public void stopForMethod() {
+        checkForUnmatchedRequests();
+        after();
+        stop();
+        this.methodName = null;
+        this.servers.clear();
+    }
 }

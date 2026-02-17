@@ -1,12 +1,12 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHReleaseBuilder.MakeLatest;
 
 import java.util.Date;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -239,3 +239,5 @@ public class GHReleaseTest extends AbstractGitHubWireMockTest {
         }
     }
 }
+
+

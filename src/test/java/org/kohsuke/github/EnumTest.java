@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -126,3 +126,4 @@ public class EnumTest extends AbstractGitHubWireMockTest {
         assertThat(ReactionContent.values().length, equalTo(8));
     }
 }
+

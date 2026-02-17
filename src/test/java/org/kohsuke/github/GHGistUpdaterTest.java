@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class GHGistUpdaterTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @After
+    @AfterEach
     public void cleanUp() throws Exception {
         // Cleanup is only needed when proxying
         if (!mockGitHub.isUseProxy()) {
@@ -47,7 +47,7 @@ public class GHGistUpdaterTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         GHGistBuilder builder = new GHGistBuilder(gitHub);
         gist = builder.description("Test for the API")
@@ -96,3 +96,4 @@ public class GHGistUpdaterTest extends AbstractGitHubWireMockTest {
         assertThat(files.get("update-me.txt").getContent(), equalTo("Content updated by API"));
     }
 }
+

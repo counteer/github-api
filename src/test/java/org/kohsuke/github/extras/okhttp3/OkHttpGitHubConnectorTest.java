@@ -5,9 +5,9 @@ import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.AbstractGitHubWireMockTest;
 import org.kohsuke.github.GHRateLimit;
 import org.kohsuke.github.GHRepository;
@@ -226,7 +226,7 @@ public class OkHttpGitHubConnectorTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @After
+    @AfterEach
     public void deleteCache() throws IOException {
         if (cache != null) {
             cache.delete();
@@ -239,7 +239,7 @@ public class OkHttpGitHubConnectorTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setupRepo() throws Exception {
         if (mockGitHub.isUseProxy()) {
             GHRepository repo = getRepository(getNonRecordingGitHub());
@@ -345,3 +345,4 @@ public class OkHttpGitHubConnectorTest extends AbstractGitHubWireMockTest {
     }
 
 }
+

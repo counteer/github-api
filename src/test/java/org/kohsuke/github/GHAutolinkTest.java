@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class GHAutolinkTest extends AbstractGitHubWireMockTest {
     /**
      * Cleanup.
      */
-    @After
+    @AfterEach
     public void cleanup() {
         if (repo != null) {
             try {
@@ -49,7 +49,7 @@ public class GHAutolinkTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         repo = gitHub.getRepository("Alaurant/github-api-test");
         if (repo == null) {
@@ -203,3 +203,4 @@ public class GHAutolinkTest extends AbstractGitHubWireMockTest {
 
     }
 }
+

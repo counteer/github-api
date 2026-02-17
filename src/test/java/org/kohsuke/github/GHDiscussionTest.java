@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class GHDiscussionTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @After
+    @AfterEach
     public void cleanupDiscussions() throws Exception {
         // only need to clean up if we're pointing to the live site
         if (mockGitHub.isUseProxy()) {
@@ -51,7 +51,7 @@ public class GHDiscussionTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         team = gitHub.getOrganization(GITHUB_API_TEST_ORG).getTeamBySlug(TEAM_SLUG);
     }
@@ -189,3 +189,4 @@ public class GHDiscussionTest extends AbstractGitHubWireMockTest {
     }
 
 }
+

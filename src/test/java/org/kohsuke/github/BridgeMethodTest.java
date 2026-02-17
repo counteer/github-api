@@ -1,7 +1,9 @@
 package org.kohsuke.github;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.lang.reflect.Method;
 import java.time.Instant;
@@ -19,7 +21,7 @@ import static org.hamcrest.Matchers.*;
  *
  * @author Kohsuke Kawaguchi
  */
-public class BridgeMethodTest extends Assert {
+public class BridgeMethodTest {
 
     /**
      * Create default BridgeMethodTest instance
@@ -42,7 +44,7 @@ public class BridgeMethodTest extends Assert {
 
         String artifactId = System.getProperty("test.projectArtifactId", "default");
         // Only run these tests when building the "bridged" artifact
-        org.junit.Assume.assumeThat(artifactId, equalTo("github-api-bridged"));
+        assumeTrue(artifactId.equals("github-api-bridged"));
 
         verifyBridgeMethods(GHAppInstallation.class, "getSuspendedAt", Date.class, Instant.class);
         verifyBridgeMethods(GHAppInstallationToken.class, "getExpiresAt", Date.class, Instant.class);
@@ -140,3 +142,5 @@ public class BridgeMethodTest extends Assert {
         assertThat(foundMethods, containsInAnyOrder(returnTypes));
     }
 }
+
+

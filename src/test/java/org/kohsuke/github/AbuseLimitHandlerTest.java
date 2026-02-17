@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.connector.GitHubConnectorResponse;
 
 import java.io.IOException;
@@ -583,3 +583,4 @@ public class AbuseLimitHandlerTest extends AbstractGitHubWireMockTest {
         return super.getWireMockOptions().extensions(templating.newResponseTransformer());
     }
 }
+

@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,3 +73,4 @@ public class GHExternalGroupTest extends AbstractGitHubWireMockTest {
     }
 
 }
+

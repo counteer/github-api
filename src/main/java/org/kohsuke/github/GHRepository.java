@@ -239,17 +239,14 @@ public class GHRepository extends GHObject {
     }
 
     // Only used within listCodeownersErrors().
-    private static class GHCodeownersErrors {
-        List<GHCodeownersError> errors;
+    private record GHCodeownersErrors(List<GHCodeownersError> errors) {
     }
 
     // Only used within listTopics().
-    private static class Topics {
-        List<String> names;
+    private record Topics(List<String> names) {
     }
 
-    static class GHRepoPermission {
-        boolean pull, push, admin;
+    record GHRepoPermission(boolean pull, boolean push, boolean admin) {
     }
 
     /**
@@ -2295,7 +2292,7 @@ public class GHRepository extends GHObject {
      * @return the boolean
      */
     public boolean hasAdminAccess() {
-        return permissions != null && permissions.admin;
+        return permissions != null && permissions.admin();
     }
 
     /**
@@ -2384,7 +2381,7 @@ public class GHRepository extends GHObject {
      * @return the boolean
      */
     public boolean hasPullAccess() {
-        return permissions != null && permissions.pull;
+        return permissions != null && permissions.pull();
     }
 
     /**
@@ -2393,7 +2390,7 @@ public class GHRepository extends GHObject {
      * @return the boolean
      */
     public boolean hasPushAccess() {
-        return permissions != null && permissions.push;
+        return permissions != null && permissions.push();
     }
 
     /**
@@ -2589,7 +2586,8 @@ public class GHRepository extends GHObject {
     public List<GHCodeownersError> listCodeownersErrors() throws IOException {
         return root().createRequest()
                 .withUrlPath(getApiTailUrl("codeowners/errors"))
-                .fetch(GHCodeownersErrors.class).errors;
+                .fetch(GHCodeownersErrors.class)
+                .errors();
     }
 
     /**
@@ -2950,7 +2948,7 @@ public class GHRepository extends GHObject {
      */
     public List<String> listTopics() throws IOException {
         Topics topics = root().createRequest().withUrlPath(getApiTailUrl("topics")).fetch(Topics.class);
-        return topics.names;
+        return topics.names();
     }
 
     /**

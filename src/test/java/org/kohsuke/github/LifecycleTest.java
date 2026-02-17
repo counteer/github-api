@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -130,3 +130,4 @@ public class LifecycleTest extends AbstractGitHubWireMockTest {
         return asset;
     }
 }
+

@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -188,3 +188,4 @@ public class EnterpriseManagedSupportTest extends AbstractGitHubWireMockTest {
         assertThat(maybeException.isPresent(), is(false));
     }
 }
+

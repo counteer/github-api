@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -58,3 +58,4 @@ public class Github2faTest extends AbstractGitHubWireMockTest {
 
     }
 }
+

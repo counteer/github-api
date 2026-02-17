@@ -25,7 +25,7 @@
 package org.kohsuke.github;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URL;
@@ -238,3 +238,4 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         fail("The MIT license was not found");
     }
 }
+

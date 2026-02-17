@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.hamcrest.MatcherAssert.assertThat;
 import org.kohsuke.github.GHCheckRun.Conclusion;
 import org.kohsuke.github.GHOrganization.RepositoryRole;
 import org.kohsuke.github.GHRepository.Visibility;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.kohsuke.github.GHVerification.Reason.GPGVERIFY_ERROR;
 import static org.kohsuke.github.GHVerification.Reason.UNKNOWN_SIGNATURE_TYPE;
 
@@ -737,7 +739,7 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
     public void ghRepositorySearchBuilderIgnoresUnknownVisibility() {
         GHRepositorySearchBuilder ghRepositorySearchBuilder;
 
-        GHException exception = assertThrows(GHException.class,
+        GHException exception = org.junit.jupiter.api.Assertions.assertThrows(GHException.class,
                 () -> new GHRepositorySearchBuilder(gitHub).visibility(Visibility.UNKNOWN));
         assertThat(exception.getMessage(),
                 startsWith("UNKNOWN is a placeholder for unexpected values encountered when reading data."));
@@ -1362,11 +1364,9 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Test(expected = HttpException.class)
+    @Test
     public void syncNoFork() throws IOException {
-        GHRepository r = getRepository();
-        GHBranchSync sync = r.sync("main");
-        fail("Should have thrown an exception");
+        org.junit.jupiter.api.Assertions.assertThrows(HttpException.class, () -> getRepository().sync("main"));
 
     }
 
@@ -1447,7 +1447,7 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
         GHRepository repository = getRepository();
         GHRepositoryVariable variable = repository.getVariable("mynewvariable");
         variable.delete();
-        Assert.assertThrows(GHFileNotFoundException.class, () -> repository.getVariable("mynewvariable"));
+        org.junit.jupiter.api.Assertions.assertThrows(GHFileNotFoundException.class, () -> repository.getVariable("mynewvariable"));
     }
 
     /**
@@ -1991,3 +1991,5 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
         return getRepository(gitHub);
     }
 }
+
+

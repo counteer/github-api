@@ -3,9 +3,9 @@ package org.kohsuke.github;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.connector.GitHubConnector;
 import org.kohsuke.github.connector.GitHubConnectorRequest;
 import org.kohsuke.github.connector.GitHubConnectorResponse;
@@ -205,7 +205,7 @@ public class RequesterRetryTest extends AbstractGitHubWireMockTest {
     /**
      * Attach log capturer.
      */
-    @Before
+    @BeforeEach
     public void attachLogCapturer() {
         logCapturingStream = new ByteArrayOutputStream();
         customLogHandler = new StreamHandler(logCapturingStream, new SimpleFormatter());
@@ -313,7 +313,7 @@ public class RequesterRetryTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore("Used okhttp3 and this to verify connection closing. Too flaky for CI system.")
+    @Disabled("Used okhttp3 and this to verify connection closing. Too flaky for CI system.")
     @Test
     public void testGitHubIsApiUrlValid() throws Exception {
 
@@ -631,3 +631,4 @@ public class RequesterRetryTest extends AbstractGitHubWireMockTest {
         return getRepository(gitHub);
     }
 }
+

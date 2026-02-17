@@ -1,12 +1,14 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.kohsuke.github.authorization.AppInstallationAuthorizationProvider;
 import org.kohsuke.github.authorization.ImmutableAuthorizationProvider;
 import org.kohsuke.github.authorization.OrgAppInstallationAuthorizationProvider;
 
 import java.io.IOException;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -31,7 +33,7 @@ public class AppInstallationAuthorizationProviderTest extends AbstractGHAppInsta
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Test(expected = HttpException.class)
+    @Test
     public void invalidJWTTokenRaisesException() throws IOException {
         OrgAppInstallationAuthorizationProvider provider = new OrgAppInstallationAuthorizationProvider(
                 "testOrganization",
@@ -40,7 +42,7 @@ public class AppInstallationAuthorizationProviderTest extends AbstractGHAppInsta
                 .withEndpoint(mockGitHub.apiServer().baseUrl())
                 .build();
 
-        provider.getEncodedAuthorization();
+        assertThrows(HttpException.class, provider::getEncodedAuthorization);
     }
 
     /**
@@ -87,3 +89,4 @@ public class AppInstallationAuthorizationProviderTest extends AbstractGHAppInsta
     }
 
 }
+

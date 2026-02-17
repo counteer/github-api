@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.AbstractGitHubWireMockTest;
 import org.kohsuke.github.connector.GitHubConnectorResponse.ByteArrayResponse;
 
@@ -221,3 +221,5 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
     }
 
 }
+
+

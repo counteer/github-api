@@ -6,11 +6,9 @@ import org.kohsuke.github.internal.EnumUtils;
 import java.io.IOException;
 import java.net.URL;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -54,7 +52,7 @@ public class GHApp extends GHObject {
     public List<GHEvent> getEvents() {
         return events.stream()
                 .map(e -> EnumUtils.getEnumOrDefault(GHEvent.class, e, GHEvent.UNKNOWN))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -185,7 +183,7 @@ public class GHApp extends GHObject {
      * @return the permissions
      */
     public Map<String, String> getPermissions() {
-        return Collections.unmodifiableMap(permissions);
+        return Map.copyOf(permissions);
     }
 
     /**

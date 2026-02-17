@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.*;
 
@@ -308,3 +308,4 @@ public class GHVerificationReasonTest extends AbstractGitHubWireMockTest {
         assertThat(commit.getCommitShortInfo().getVerification().getSignature(), notNullValue());
     }
 }
+

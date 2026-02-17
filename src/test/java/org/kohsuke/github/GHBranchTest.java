@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.*;
 
@@ -75,3 +75,4 @@ public class GHBranchTest extends AbstractGitHubWireMockTest {
         assertThat(mergeCommit, nullValue());
     }
 }
+

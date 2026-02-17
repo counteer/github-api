@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * The Class GHPublicKeyTest.
@@ -37,3 +37,4 @@ public class GHPublicKeyTest extends AbstractGitHubWireMockTest {
         }
     }
 }
+

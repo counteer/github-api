@@ -6,18 +6,23 @@ package org.kohsuke.github;
  * relevant documentation</a>.
  *
  * @author Michael Grant
+ * @param kind
+ *            the kind
+ * @param source
+ *            the source
+ * @param suggestion
+ *            the suggestion
+ * @param message
+ *            the message
+ * @param path
+ *            the path
+ * @param line
+ *            the line
+ * @param column
+ *            the column
  */
-public class GHCodeownersError {
-
-    private String kind, source, suggestion, message, path;
-
-    private int line, column;
-
-    /**
-     * Create default GHCodeownersError instance
-     */
-    public GHCodeownersError() {
-    }
+public record GHCodeownersError(String kind, String source, String suggestion, String message, String path, int line,
+        int column) {
 
     /**
      * Gets column.

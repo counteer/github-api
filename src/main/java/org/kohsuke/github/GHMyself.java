@@ -1,13 +1,11 @@
 package org.kohsuke.github;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -96,7 +94,7 @@ public class GHMyself extends GHUser {
         for (GHRepository r : listRepositories()) {
             repositories.put(r.getName(), r);
         }
-        return Collections.unmodifiableMap(repositories);
+        return Map.copyOf(repositories);
     }
 
     /**
@@ -123,7 +121,7 @@ public class GHMyself extends GHUser {
      */
     @Deprecated
     public List<String> getEmails() throws IOException {
-        return getEmails2().stream().map(email -> email.getEmail()).collect(Collectors.toList());
+        return getEmails2().stream().map(email -> email.getEmail()).toList();
     }
 
     /**

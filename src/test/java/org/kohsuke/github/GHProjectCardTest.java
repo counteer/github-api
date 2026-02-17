@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class GHProjectCardTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @After
+    @AfterEach
     public void after() throws IOException {
         if (mockGitHub.isUseProxy()) {
             if (card != null) {
@@ -73,7 +73,7 @@ public class GHProjectCardTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         org = gitHub.getOrganization(GITHUB_API_TEST_ORG);
         project = org.createProject("test-project", "This is a test project");
@@ -192,3 +192,4 @@ public class GHProjectCardTest extends AbstractGitHubWireMockTest {
         assertThat(card.isArchived(), is(false));
     }
 }
+

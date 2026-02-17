@@ -3,7 +3,7 @@ package org.kohsuke.github;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * AOT test to check if the required classes are registered for reflections / serialization. WARNING: This test needs to
@@ -93,3 +93,5 @@ public class AotIntegrationTest {
                 .filter(x -> !x.contains("org.kohsuke.github.AotTest"));
     }
 }
+
+
