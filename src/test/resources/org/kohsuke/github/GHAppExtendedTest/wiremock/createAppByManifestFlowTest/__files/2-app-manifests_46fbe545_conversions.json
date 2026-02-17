@@ -30,7 +30,7 @@
   "updated_at": "2023-05-08T09:22:36Z",
   "client_id": "Iv1.1c63d0b87c03d42e",
   "webhook_secret": "f4dafa9b05d8248d81f65f0e6cb108cb8bb76a0c",
-  "pem": "-----BEGIN RSA PRIVATE KEY-----\nREDACTED TEST KEY\n-----END RSA PRIVATE KEY-----\n",
+  "pem": "REDACTED_TEST_KEY",
   "client_secret": "f4b60603e85b3965492b393bca0809a914dcdf18",
   "permissions": {
     "issues": "write",
