@@ -45,7 +45,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void blob() throws Exception {
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
 
         GHRepository r = gitHub.getRepository("hub4j/github-api");
         String sha1 = "a12243f2fc5b8c2ba47dd677d0b0c7583539584d";
@@ -1725,7 +1725,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
             hook2.ping();
             hook2.delete();
             final GHHook finalRepoHook = hook;
-            GHFileNotFoundException e = Assert.assertThrows(GHFileNotFoundException.class,
+            GHFileNotFoundException e = Assertions.assertThrows(GHFileNotFoundException.class,
                     () -> r.getHook((int) finalRepoHook.getId()));
             assertThat(e.getMessage(),
                     containsString("repos/hub4j-test-org/github-api/hooks/" + finalRepoHook.getId()));
@@ -1751,7 +1751,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
             hook2.delete();
 
             final GHHook finalOrgHook = hook;
-            GHFileNotFoundException e2 = Assert.assertThrows(GHFileNotFoundException.class,
+            GHFileNotFoundException e2 = Assertions.assertThrows(GHFileNotFoundException.class,
                     () -> o.getHook((int) finalOrgHook.getId()));
             assertThat(e2.getMessage(), containsString("orgs/hub4j-test-org/hooks/" + finalOrgHook.getId()));
             assertThat(e2.getMessage(), containsString("rest/reference/orgs#get-an-organization-webhook"));

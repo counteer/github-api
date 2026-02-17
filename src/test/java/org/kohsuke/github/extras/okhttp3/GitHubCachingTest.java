@@ -74,7 +74,7 @@ public class GitHubCachingTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void testCached404() throws Exception {
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
 
         // ISSUE #669
         snapshotNotAllowed();

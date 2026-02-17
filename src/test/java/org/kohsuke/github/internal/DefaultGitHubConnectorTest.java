@@ -45,7 +45,7 @@ public class DefaultGitHubConnectorTest extends AbstractGitHubWireMockTest {
 
         connector = DefaultGitHubConnector.create("okhttp");
 
-        Assert.assertThrows(IllegalStateException.class, () -> DefaultGitHubConnector.create(""));
+        Assertions.assertThrows(IllegalStateException.class, () -> DefaultGitHubConnector.create(""));
 
         gitHub = new GitHubBuilder().withConnector(new GitHubConnector() {
             @Override

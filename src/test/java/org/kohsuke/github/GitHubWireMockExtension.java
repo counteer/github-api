@@ -2,10 +2,12 @@ package org.kohsuke.github;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.recording.RecordSpecBuilder;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -51,6 +53,10 @@ public class GitHubWireMockExtension implements BeforeEachCallback, AfterEachCal
 
     public boolean isUseProxy() {
         return rule.isUseProxy();
+    }
+
+    public void customizeRecordSpec(Consumer<RecordSpecBuilder> customizeRecordSpec) {
+        rule.customizeRecordSpec(customizeRecordSpec);
     }
 
     public boolean isTestWithOrg() {

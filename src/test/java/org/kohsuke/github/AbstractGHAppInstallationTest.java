@@ -7,12 +7,16 @@ import org.kohsuke.github.authorization.AuthorizationProvider;
 import org.kohsuke.github.extras.authorization.JWTTokenProvider;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Instant;
@@ -21,7 +25,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AbstractGHAppInstallationTest.
  */
@@ -32,12 +35,24 @@ public class AbstractGHAppInstallationTest extends AbstractGitHubWireMockTest {
     private static String ENV_GITHUB_APP_ORG = "GITHUB_APP_ORG";
     private static String ENV_GITHUB_APP_REPO = "GITHUB_APP_REPO";
 
-    private static String PRIVATE_KEY_FILE_APP_1 = "/ghapi-test-app-1.private-key.pem";
-    private static String PRIVATE_KEY_FILE_APP_2 = "/ghapi-test-app-2.private-key.pem";
-    private static String PRIVATE_KEY_FILE_APP_3 = "/ghapi-test-app-3.private-key.pem";
     private static String TEST_APP_ID_1 = "82994";
     private static String TEST_APP_ID_2 = "83009";
     private static String TEST_APP_ID_3 = "89368";
+
+    private static String privateKeyPEM;
+
+    static {
+        try {
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+            kpg.initialize(2048);
+            KeyPair kp = kpg.generateKeyPair();
+            Base64.Encoder encoder = Base64.getMimeEncoder(64, new byte[]{ 10 });
+            privateKeyPEM = "-----BEGIN PRIVATE KEY-----\n" + encoder.encodeToString(kp.getPrivate().getEncoded())
+                    + "\n-----END PRIVATE KEY-----";
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException("Failed to generate test keypair", e);
+        }
+    }
 
     /** The jwt provider 1. */
     protected final AuthorizationProvider jwtProvider1;
@@ -60,24 +75,25 @@ public class AbstractGHAppInstallationTest extends AbstractGitHubWireMockTest {
                 jwtProvider2 = jwtProvider1;
                 jwtProvider3 = jwtProvider1;
             } else {
-                jwtProvider1 = new JWTTokenProvider(TEST_APP_ID_1,
-                        new File(this.getClass().getResource(PRIVATE_KEY_FILE_APP_1).getFile()));
-                jwtProvider2 = new JWTTokenProvider(TEST_APP_ID_2,
-                        new File(this.getClass().getResource(PRIVATE_KEY_FILE_APP_2).getFile()).toPath());
-                jwtProvider3 = new JWTTokenProvider(TEST_APP_ID_3,
-                        new String(Files.readAllBytes(
-                                new File(this.getClass().getResource(PRIVATE_KEY_FILE_APP_3).getFile()).toPath()),
-                                StandardCharsets.UTF_8));
+                // We use three different ways to initialize the provider to test all constructors
+                File tempKeyFile = File.createTempFile("ghapi-test-app-", ".pem");
+                tempKeyFile.deleteOnExit();
+                try (FileWriter fw = new FileWriter(tempKeyFile)) {
+                    fw.write(privateKeyPEM);
+                }
+
+                jwtProvider1 = new JWTTokenProvider(TEST_APP_ID_1, tempKeyFile);
+                jwtProvider2 = new JWTTokenProvider(TEST_APP_ID_2, tempKeyFile.toPath());
+                jwtProvider3 = new JWTTokenProvider(TEST_APP_ID_3, privateKeyPEM);
             }
         } catch (GeneralSecurityException | IOException e) {
             throw new RuntimeException("These should never fail", e);
         }
     }
 
-    private String createJwtToken(String keyFileResouceName, String appId) {
+    private String createJwtToken(String appId) {
         try {
-            String keyPEM = IOUtils.toString(this.getClass().getResource(keyFileResouceName), "US-ASCII")
-                    .replaceAll("(?m)^--.*", "") // remove comments from PEM to allow decoding
+            String keyPEM = privateKeyPEM.replaceAll("(?m)^--.*", "") // remove comments from PEM to allow decoding
                     .replaceAll("\\s", "");
 
             PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(keyPEM));

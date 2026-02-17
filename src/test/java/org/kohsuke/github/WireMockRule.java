@@ -24,11 +24,6 @@ import com.github.tomakehurst.wiremock.stubbing.ServeEvent;
 import com.github.tomakehurst.wiremock.stubbing.StubImport;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.github.tomakehurst.wiremock.verification.*;
-import org.junit.rules.MethodRule;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
 
 import java.io.File;
 import java.util.List;
@@ -39,7 +34,7 @@ import java.util.UUID;
  *
  * @author Liam Newman
  */
-public class WireMockRule implements MethodRule, TestRule, Container, Stubbing, Admin {
+public class WireMockRule implements Container, Stubbing, Admin {
 
     private boolean failOnUnmatchedRequests;
     private String methodName = null;
@@ -115,36 +110,9 @@ public class WireMockRule implements MethodRule, TestRule, Container, Stubbing, 
      * @param stubMapping
      *            the stub mapping
      */
+    @Override
     public void addStubMapping(StubMapping stubMapping) {
         wireMockServer.addStubMapping(stubMapping);
-    }
-
-    /**
-     * Apply.
-     *
-     * @param base
-     *            the base
-     * @param description
-     *            the description
-     * @return the statement
-     */
-    public Statement apply(Statement base, Description description) {
-        return this.apply(base, description.getMethodName());
-    }
-
-    /**
-     * Apply.
-     *
-     * @param base
-     *            the base
-     * @param method
-     *            the method
-     * @param target
-     *            the target
-     * @return the statement
-     */
-    public Statement apply(final Statement base, FrameworkMethod method, Object target) {
-        return this.apply(base, method.getName());
     }
 
     /**
@@ -845,31 +813,27 @@ public class WireMockRule implements MethodRule, TestRule, Container, Stubbing, 
         wireMockServer.verify(count, requestPatternBuilder);
     }
 
-    private Statement apply(final Statement base, final String methodName) {
-        return new Statement() {
-            public void evaluate() throws Throwable {
-                WireMockRule.this.methodName = methodName;
-                final Options localOptions = new WireMockRuleConfiguration(WireMockRule.this.options, methodName);
+    public void startServer(String methodName) {
+        this.methodName = methodName;
+        final Options localOptions = new WireMockRuleConfiguration(this.options, methodName);
 
-                new File(localOptions.filesRoot().getPath(), "mappings").mkdirs();
-                new File(localOptions.filesRoot().getPath(), "__files").mkdirs();
+        new File(localOptions.filesRoot().getPath(), "mappings").mkdirs();
+        new File(localOptions.filesRoot().getPath(), "__files").mkdirs();
 
-                WireMockRule.this.wireMockServer = new WireMockServer(localOptions);
-                WireMockRule.this.start();
-                WireMock.configureFor("localhost", WireMockRule.this.port());
+        this.wireMockServer = new WireMockServer(localOptions);
+        this.start();
+        WireMock.configureFor("localhost", this.port());
+        this.before();
+    }
 
-                try {
-                    WireMockRule.this.before();
-                    base.evaluate();
-                    WireMockRule.this.checkForUnmatchedRequests();
-                } finally {
-                    WireMockRule.this.after();
-                    WireMockRule.this.stop();
-                    WireMockRule.this.methodName = null;
-                }
-
-            }
-        };
+    public void stopServer() {
+        try {
+            this.checkForUnmatchedRequests();
+        } finally {
+            this.after();
+            this.stop();
+            this.methodName = null;
+        }
     }
 
     private void checkForUnmatchedRequests() {

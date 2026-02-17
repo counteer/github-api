@@ -32,7 +32,7 @@ public class LifecycleTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void testCreateRepository() throws IOException {
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
 
         GHMyself myself = gitHub.getMyself();
         // GHOrganization org = gitHub.getOrganization(GITHUB_API_TEST_ORG);

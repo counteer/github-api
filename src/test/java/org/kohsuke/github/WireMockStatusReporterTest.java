@@ -5,8 +5,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -35,7 +36,7 @@ public class WireMockStatusReporterTest extends AbstractGitHubWireMockTest {
     @Test
     public void BasicBehaviors_whenNotProxying() throws Exception {
         snapshotNotAllowed();
-        assumeFalse("Test only valid when not proxying", mockGitHub.isUseProxy());
+        assumeFalse(mockGitHub.isUseProxy(), "Test only valid when not proxying");
 
         Exception e = null;
         GHRepository repo = null;
@@ -114,7 +115,7 @@ public class WireMockStatusReporterTest extends AbstractGitHubWireMockTest {
     public void user_whenNotProxying_Stubbed() throws Exception {
         snapshotNotAllowed();
 
-        assumeFalse("Test only valid when not proxying", mockGitHub.isUseProxy());
+        assumeFalse(mockGitHub.isUseProxy(), "Test only valid when not proxying");
 
         verifyAuthenticated(gitHub);
         assertThat(gitHub.getClient().getLogin(), equalTo(STUBBED_USER_LOGIN));
@@ -161,8 +162,7 @@ public class WireMockStatusReporterTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void whenSnapshot_EnsureProxy() {
-        assumeTrue("Test only valid when Snapshotting (-Dtest.github.takeSnapshot to enable)",
-                mockGitHub.isTakeSnapshot());
+        assumeTrue(mockGitHub.isTakeSnapshot(), "Test only valid when Snapshotting (-Dtest.github.takeSnapshot to enable)");
 
         assertThat("When taking a snapshot, proxy should automatically be enabled", mockGitHub.isUseProxy());
     }
@@ -173,8 +173,7 @@ public class WireMockStatusReporterTest extends AbstractGitHubWireMockTest {
     @Disabled("Not implemented yet")
     @Test
     public void whenSnapshot_EnsureRecordToExpectedLocation() {
-        assumeTrue("Test only valid when Snapshotting (-Dtest.github.takeSnapshot to enable)",
-                mockGitHub.isTakeSnapshot());
+        assumeTrue(mockGitHub.isTakeSnapshot(), "Test only valid when Snapshotting (-Dtest.github.takeSnapshot to enable)");
 
     }
 }
