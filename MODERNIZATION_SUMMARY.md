@@ -78,3 +78,47 @@ The changes were verified using Maven `3.9.11` and Java `25.0.1`.
 - Build: `mvn -q -DskipTests clean compile` — SUCCESS
 - Scoped tests: `mvn -q test "-Dtest=GHOrganizationTest,GHUserTest,GHRepositoryTest"` — executed successfully with no reported failures (build completed without errors)
 - Full suite (earlier verification on Java 25): 537 tests run, 0 failures, 0 errors, 24 skipped — SUCCESS
+
+
+## 6. Test Stack Migration to JUnit 5 (completed)
+- Dropped JUnit 4 and the Vintage engine from the build.
+- Pinned test plugins to modern versions for Java 25:
+  - maven-surefire-plugin: 3.5.2
+  - maven-failsafe-plugin: 3.5.2 (if used)
+- Updated test codebase to JUnit 5 (Jupiter):
+  - Replaced `org.junit.Assert` usage with `org.junit.jupiter.api.Assertions` and Hamcrest `MatcherAssert.assertThat` where appropriate.
+  - Replaced `org.junit.Assume` with `org.junit.jupiter.api.Assumptions` and corrected argument order to `assumeXxx(condition, message)`.
+  - Removed JUnit 4 Rule APIs and migrated to Jupiter extensions:
+    - Introduced `GitHubWireMockExtension` to wrap existing `GitHubWireMockRule` lifecycle.
+    - Made `WireMockMultiServerRule` and `WireMockRule` JUnit‑agnostic; added explicit `startServer(methodName)` / `stopServer()` used by the extension.
+    - Added `PayloadExtension` and migrated payload-driven tests (e.g., `GHEventPayloadTest`).
+- Representative files updated:
+  - `AbstractGitHubWireMockTest` → uses `@RegisterExtension GitHubWireMockExtension`
+  - `WireMockRule` → removed JUnit 4 `MethodRule`/`TestRule` and `apply(...)`
+  - Converted lingering `Assert.assertThrows`/`Assume.*` in: `AppTest`, `GHCheckRunBuilderTest`, `GitHubConnectionTest`, `GitHubStaticTest`, `GitHubTest`, `LifecycleTest`.
+
+## 7. Test Secrets Hygiene: Remove committed PEM keys (completed)
+- Removed committed test private key files:
+  - `src/test/resources/ghapi-test-app-1.private-key.pem`
+  - `src/test/resources/ghapi-test-app-2.private-key.pem`
+  - `src/test/resources/ghapi-test-app-3.private-key.pem`
+- Implemented runtime key generation for tests:
+  - `AbstractGHAppInstallationTest` now generates a temporary RSA keypair (PKCS#8) at runtime and initializes `JWTTokenProvider` via:
+    - File constructor
+    - Path constructor
+    - Raw String constructor
+  - Behavior is unchanged from the tests’ perspective; no secrets are stored in VCS.
+
+## 8. Verification (Java 25)
+- Build: `mvn -q -DskipTests=false test-compile` — SUCCESS.
+- Tests: `mvn -q test` — SUCCESS.
+  - Sample surefire report lines (excerpt):
+    - `AppTest`: Tests run: 67, Failures: 0, Errors: 0, Skipped: 12
+    - `GHAppInstallationTest`: Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+    - `GHAppExtendedTest`: Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+    - `GitHubConnectorResponseTest`: Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+    - (All other tests similarly green; a few intentionally skipped)
+
+Notes:
+- WireMock integration now uses the Jupiter extension and JUnit‑agnostic helpers; no JUnit 4 dependencies remain in the test sources.
+- Runtime-generated test keys avoid accidental exposure and simplify maintenance.
