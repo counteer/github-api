@@ -454,7 +454,6 @@ For changes after v1.101 see the [GitHub Releases page](https://github.com/hub4j
 **Closed issues:**
 
 - missing maven central dependencies in 1.72 [\#257](https://github.com/hub4j/github-api/issues/257)
-- Not able to specify client Id and client secret to connect using OAuth [\#256](https://github.com/hub4j/github-api/issues/256)
 - Stuck in  Github connect [\#255](https://github.com/hub4j/github-api/issues/255)
 - Infinite loop in `GHNotificationStream$1.fetch\(\)` [\#252](https://github.com/hub4j/github-api/issues/252)
 - How to get statistics using this library [\#241](https://github.com/hub4j/github-api/issues/241)

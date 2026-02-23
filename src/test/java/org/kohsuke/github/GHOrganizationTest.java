@@ -1,9 +1,9 @@
 package org.kohsuke.github;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHOrganization.Permission;
 import org.kohsuke.github.GHOrganization.RepositoryRole;
 
@@ -15,6 +15,9 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThrows;
 import static org.kohsuke.github.ExternalGroupsTestingSupport.*;
 import static org.kohsuke.github.ExternalGroupsTestingSupport.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // TODO: Auto-generated Javadoc
 
@@ -44,8 +47,8 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Before
-    @After
+    @BeforeEach
+    @AfterEach
     public void cleanUpTeam() throws IOException {
         // Cleanup is only needed when proxying
         if (!mockGitHub.isUseProxy()) {
@@ -75,7 +78,7 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
         boolean result = org.areOrganizationProjectsEnabled();
 
         // Assert
-        assertThat(result, is(true));
+        assertTrue(result);
     }
 
     /**
@@ -96,8 +99,8 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
                 .privacy(GHTeam.Privacy.CLOSED)
                 .parentTeamId(3617900)
                 .create();
-        assertThat(team.getDescription(), equalTo("Team description"));
-        assertThat(team.getPrivacy(), equalTo(GHTeam.Privacy.CLOSED));
+        assertEquals("Team description", team.getDescription());
+        assertEquals(GHTeam.Privacy.CLOSED, team.getPrivacy());
     }
 
     /**
@@ -117,7 +120,7 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
                 .team(org.getTeamByName("Core Developers"))
                 .private_(false)
                 .create();
-        assertThat(repository, notNullValue());
+        assertNotNull(repository);
     }
 
     /**
@@ -174,8 +177,8 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
                 .team(org.getTeamByName("Core Developers"))
                 .autoInit(true)
                 .create();
-        assertThat(repository, notNullValue());
-        assertThat(repository.getReadme(), notNullValue());
+        assertNotNull(repository);
+        assertNotNull(repository.getReadme());
     }
 
     /**
@@ -199,25 +202,25 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
                 .autoInit(true)
                 .isTemplate(true)
                 .create();
-        assertThat(repository, notNullValue());
-        assertThat(mockGitHub.getRequestCount(), equalTo(requestCount + 1));
+        assertNotNull(repository);
+        assertEquals(requestCount + 1, mockGitHub.getRequestCount());
 
-        assertThat(repository.getReadme(), notNullValue());
-        assertThat(mockGitHub.getRequestCount(), equalTo(requestCount + 2));
+        assertNotNull(repository.getReadme());
+        assertEquals(requestCount + 2, mockGitHub.getRequestCount());
 
         // isTemplate() does not call populate() from create
-        assertThat(repository.isTemplate(), equalTo(true));
-        assertThat(mockGitHub.getRequestCount(), equalTo(requestCount + 2));
+        assertTrue(repository.isTemplate());
+        assertEquals(requestCount + 2, mockGitHub.getRequestCount());
 
         repository = org.getRepository(GITHUB_API_TEMPLATE_TEST);
 
         // first isTemplate() does not call populate()
-        assertThat(repository.isTemplate(), equalTo(true));
-        assertThat(mockGitHub.getRequestCount(), equalTo(requestCount + 3));
+        assertTrue(repository.isTemplate());
+        assertEquals(requestCount + 3, mockGitHub.getRequestCount());
 
         // second isTemplate() does not call populate()
-        assertThat(repository.isTemplate(), equalTo(true));
-        assertThat(mockGitHub.getRequestCount(), equalTo(requestCount + 3));
+        assertTrue(repository.isTemplate());
+        assertEquals(requestCount + 3, mockGitHub.getRequestCount());
     }
 
     /**
@@ -236,8 +239,8 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
                 .owner(GITHUB_API_TEST_ORG)
                 .create();
 
-        assertThat(repository, notNullValue());
-        assertThat(repository.getReadme(), notNullValue());
+        assertNotNull(repository);
+        assertNotNull(repository.getReadme());
 
     }
 
@@ -259,8 +262,8 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
                 .owner(GITHUB_API_TEST_ORG)
                 .create();
 
-        assertThat(repository, notNullValue());
-        assertThat(repository.getReadme(), notNullValue());
+        assertNotNull(repository);
+        assertNotNull(repository.getReadme());
 
     }
 
@@ -286,12 +289,12 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
                 .owner(GITHUB_API_TEST_ORG)
                 .create();
 
-        assertThat(repository, notNullValue());
+        assertNotNull(repository);
 
         // give it a moment for branches to be created
         Thread.sleep(1500);
 
-        assertThat(repository.getBranches().keySet(), equalTo(templateRepository.getBranches().keySet()));
+        assertEquals(templateRepository.getBranches().keySet(), repository.getBranches().keySet());
 
     }
 
@@ -311,8 +314,8 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         // Create team with no permission field. Verify that default permission is pull
         GHTeam team = org.createTeam(TEAM_NAME_CREATE).repositories(repo.getFullName()).create();
-        assertThat(team.getRepositories().containsKey(REPO_NAME), is(true));
-        assertThat(team.getPermission(), equalTo(DEFAULT_PERMISSION));
+        assertTrue(team.getRepositories().containsKey(REPO_NAME));
+        assertEquals(DEFAULT_PERMISSION, team.getPermission());
     }
 
     /**
@@ -333,14 +336,14 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         team.add(repo);
 
-        assertThat(
+        assertEquals(
+                Permission.PULL.toString().toLowerCase(),
                 repo.getTeams()
                         .stream()
                         .filter(t -> TEAM_NAME_CREATE.equals(t.getName()))
                         .findFirst()
                         .get()
-                        .getPermission(),
-                equalTo(Permission.PULL.toString().toLowerCase()));
+                        .getPermission());
     }
 
     /**
@@ -361,8 +364,8 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
                 .repositories(repo.getFullName())
                 .permission(Permission.PUSH)
                 .create();
-        assertThat(team.getRepositories().containsKey(REPO_NAME), is(true));
-        assertThat(team.getPermission(), equalTo(Permission.PUSH.toString().toLowerCase()));
+        assertTrue(team.getRepositories().containsKey(REPO_NAME));
+        assertEquals(Permission.PUSH.toString().toLowerCase(), team.getPermission());
     }
 
     /**
@@ -383,14 +386,14 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         team.add(repo, GHOrganization.RepositoryRole.from(Permission.PUSH));
 
-        assertThat(
+        assertEquals(
+                Permission.PUSH.toString().toLowerCase(),
                 repo.getTeams()
                         .stream()
                         .filter(t -> TEAM_NAME_CREATE.equals(t.getName()))
                         .findFirst()
                         .get()
-                        .getPermission(),
-                equalTo(Permission.PUSH.toString().toLowerCase()));
+                        .getPermission());
 
     }
 
@@ -434,7 +437,7 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
         GHOrganization org = gitHub.getOrganization(GITHUB_API_TEST_ORG);
 
         GHTeam team = org.createTeam(TEAM_NAME_CREATE).privacy(GHTeam.Privacy.CLOSED).create();
-        assertThat(team.getPrivacy(), equalTo(GHTeam.Privacy.CLOSED));
+        assertEquals(GHTeam.Privacy.CLOSED, team.getPrivacy());
     }
 
     /**
@@ -452,7 +455,7 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
         org.enableOrganizationProjects(false);
 
         // Assert
-        assertThat(org.areOrganizationProjectsEnabled(), is(false));
+        assertTrue(!org.areOrganizationProjectsEnabled());
     }
 
     /**
@@ -467,19 +470,19 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         GHExternalGroup group = org.getExternalGroup(467431L);
 
-        assertThat(group, not(isExternalGroupSummary()));
+        assertTrue(!isExternalGroupSummary().matches(group));
 
-        assertThat(group.getId(), equalTo(467431L));
-        assertThat(group.getName(), equalTo("acme-developers"));
-        assertThat(group.getUpdatedAt(), notNullValue());
+        assertEquals(467431L, group.getId());
+        assertEquals("acme-developers", group.getName());
+        assertNotNull(group.getUpdatedAt());
 
-        assertThat(group.getMembers(), notNullValue());
-        assertThat(membersSummary(group),
-                hasItems("158311279:john-doe_acme:John Doe:john.doe@acme.corp",
-                        "166731041:jane-doe_acme:Jane Doe:jane.doe@acme.corp"));
+        assertNotNull(group.getMembers());
+        assertTrue(membersSummary(group).containsAll(List.of(
+                "158311279:john-doe_acme:John Doe:john.doe@acme.corp",
+                "166731041:jane-doe_acme:Jane Doe:jane.doe@acme.corp")));
 
-        assertThat(group.getTeams(), notNullValue());
-        assertThat(teamSummary(group), hasItems("9891173:ACME-DEVELOPERS"));
+        assertNotNull(group.getTeams());
+        assertTrue(teamSummary(group).contains("9891173:ACME-DEVELOPERS"));
     }
 
     /**
@@ -495,7 +498,7 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
         final GHIOException failure = assertThrows(GHNotExternallyManagedEnterpriseException.class,
                 () -> org.getExternalGroup(12345));
 
-        assertThat(failure.getMessage(), equalTo("Could not retrieve organization external group"));
+        assertEquals("Could not retrieve organization external group", failure.getMessage());
     }
 
     /**
@@ -510,11 +513,11 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         GHMembership membership = org.getMembership("fv316");
 
-        assertThat(membership, notNullValue());
-        assertThat(membership.getRole(), equalTo(GHMembership.Role.ADMIN));
-        assertThat(membership.getState(), equalTo(GHMembership.State.ACTIVE));
-        assertThat(membership.getUser().getLogin(), equalTo("fv316"));
-        assertThat(membership.getOrganization().login, equalTo("hub4j-test-org"));
+        assertNotNull(membership);
+        assertEquals(GHMembership.Role.ADMIN, membership.getRole());
+        assertEquals(GHMembership.State.ACTIVE, membership.getState());
+        assertEquals("fv316", membership.getUser().getLogin());
+        assertEquals("hub4j-test-org", membership.getOrganization().login);
     }
 
     /**
@@ -558,14 +561,13 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
                 GHNotExternallyManagedEnterpriseException.class,
                 () -> org.listExternalGroups().toList());
 
-        assertThat(failure.getMessage(), equalTo("Could not retrieve organization external groups"));
+        assertEquals("Could not retrieve organization external groups", failure.getMessage());
 
         final GHError error = failure.getError();
 
-        assertThat(error, notNullValue());
-        assertThat(error.getMessage(),
-                equalTo(EnterpriseManagedSupport.NOT_PART_OF_EXTERNALLY_MANAGED_ENTERPRISE_ERROR));
-        assertThat(error.getDocumentationUrl(), notNullValue());
+        assertNotNull(error);
+        assertEquals(EnterpriseManagedSupport.NOT_PART_OF_EXTERNALLY_MANAGED_ENTERPRISE_ERROR, error.getMessage());
+        assertNotNull(error.getDocumentationUrl());
     }
 
     /**
@@ -580,16 +582,16 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         List<GHExternalGroup> groups = org.listExternalGroups("acme").toList();
 
-        assertThat(groups, notNullValue());
+        assertNotNull(groups);
         // In case more are added in the future
-        assertThat(groups.size(), greaterThanOrEqualTo(4));
-        assertThat(groupSummary(groups),
-                hasItems("467430:acme-asset-owners",
-                        "467431:acme-developers",
-                        "467432:acme-product-owners",
-                        "467433:acme-technical-leads"));
+        assertTrue(groups.size() >= 4);
+        assertTrue(groupSummary(groups).containsAll(List.of(
+                "467430:acme-asset-owners",
+                "467431:acme-developers",
+                "467432:acme-product-owners",
+                "467433:acme-technical-leads")));
 
-        groups.forEach(group -> assertThat(group, isExternalGroupSummary()));
+        groups.forEach(group -> assertTrue(isExternalGroupSummary().matches(group)));
     }
 
     /**
@@ -604,19 +606,19 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         List<GHExternalGroup> groups = org.listExternalGroups().withPageSize(2).toList();
 
-        assertThat(groups, notNullValue());
+        assertNotNull(groups);
         // In case more are added in the future
-        assertThat(groups.size(), greaterThanOrEqualTo(4));
-        assertThat(groupSummary(groups),
-                hasItems("467430:acme-asset-owners",
-                        "467431:acme-developers",
-                        "467432:acme-product-owners",
-                        "467433:acme-technical-leads"));
+        assertTrue(groups.size() >= 4);
+        assertTrue(groupSummary(groups).containsAll(List.of(
+                "467430:acme-asset-owners",
+                "467431:acme-developers",
+                "467432:acme-product-owners",
+                "467433:acme-technical-leads")));
 
-        groups.forEach(group -> assertThat(group, isExternalGroupSummary()));
+        groups.forEach(group -> assertTrue(isExternalGroupSummary().matches(group)));
 
         // We are doing one request to get the organization and two to traverse the two pages
-        assertThat(mockGitHub.getRequestCount(), greaterThanOrEqualTo(3));
+        assertTrue(mockGitHub.getRequestCount() >= 3);
     }
 
     /**
@@ -631,19 +633,19 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         List<GHExternalGroup> groups = org.listExternalGroups().toList();
 
-        assertThat(groups, notNullValue());
+        assertNotNull(groups);
         // In case more are added in the future
-        assertThat(groups.size(), greaterThanOrEqualTo(4));
-        assertThat(groupSummary(groups),
-                hasItems("467430:acme-asset-owners",
-                        "467431:acme-developers",
-                        "467432:acme-product-owners",
-                        "467433:acme-technical-leads"));
+        assertTrue(groups.size() >= 4);
+        assertTrue(groupSummary(groups).containsAll(List.of(
+                "467430:acme-asset-owners",
+                "467431:acme-developers",
+                "467432:acme-product-owners",
+                "467433:acme-technical-leads")));
 
-        groups.forEach(group -> assertThat(group, isExternalGroupSummary()));
+        groups.forEach(group -> assertTrue(isExternalGroupSummary().matches(group)));
 
         // We are doing one request to get the organization and one to get the external groups
-        assertThat(mockGitHub.getRequestCount(), greaterThanOrEqualTo(2));
+        assertTrue(mockGitHub.getRequestCount() >= 2);
     }
 
     /**
@@ -658,22 +660,22 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         List<GHUser> admins = org.listMembersWithFilter("all").toList();
 
-        assertThat(admins, notNullValue());
+        assertNotNull(admins);
         // In case more are added in the future
-        assertThat(admins.size(), greaterThanOrEqualTo(12));
-        assertThat(admins.stream().map(GHUser::getLogin).collect(Collectors.toList()),
-                hasItems("alexanderrtaylor",
-                        "asthinasthi",
-                        "bitwiseman",
-                        "farmdawgnation",
-                        "halkeye",
-                        "jberglund-BSFT",
-                        "kohsuke",
-                        "kohsuke2",
-                        "martinvanzijl",
-                        "PauloMigAlmeida",
-                        "Sage-Pierce",
-                        "timja"));
+        assertTrue(admins.size() >= 12);
+        assertTrue(admins.stream().map(GHUser::getLogin).collect(Collectors.toList()).containsAll(List.of(
+                "alexanderrtaylor",
+                "asthinasthi",
+                "bitwiseman",
+                "farmdawgnation",
+                "halkeye",
+                "jberglund-BSFT",
+                "kohsuke",
+                "kohsuke2",
+                "martinvanzijl",
+                "PauloMigAlmeida",
+                "Sage-Pierce",
+                "timja")));
     }
 
     /**
@@ -688,22 +690,22 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         List<GHUser> admins = org.listMembersWithRole("admin").toList();
 
-        assertThat(admins, notNullValue());
+        assertNotNull(admins);
         // In case more are added in the future
-        assertThat(admins.size(), greaterThanOrEqualTo(12));
-        assertThat(admins.stream().map(GHUser::getLogin).collect(Collectors.toList()),
-                hasItems("alexanderrtaylor",
-                        "asthinasthi",
-                        "bitwiseman",
-                        "farmdawgnation",
-                        "halkeye",
-                        "jberglund-BSFT",
-                        "kohsuke",
-                        "kohsuke2",
-                        "martinvanzijl",
-                        "PauloMigAlmeida",
-                        "Sage-Pierce",
-                        "timja"));
+        assertTrue(admins.size() >= 12);
+        assertTrue(admins.stream().map(GHUser::getLogin).collect(Collectors.toList()).containsAll(List.of(
+                "alexanderrtaylor",
+                "asthinasthi",
+                "bitwiseman",
+                "farmdawgnation",
+                "halkeye",
+                "jberglund-BSFT",
+                "kohsuke",
+                "kohsuke2",
+                "martinvanzijl",
+                "PauloMigAlmeida",
+                "Sage-Pierce",
+                "timja")));
     }
 
     /**
@@ -718,22 +720,22 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         List<GHUser> admins = org.listOutsideCollaborators().toList();
 
-        assertThat(admins, notNullValue());
+        assertNotNull(admins);
         // In case more are added in the future
-        assertThat(admins.size(), greaterThanOrEqualTo(12));
-        assertThat(admins.stream().map(GHUser::getLogin).collect(Collectors.toList()),
-                hasItems("alexanderrtaylor",
-                        "asthinasthi",
-                        "bitwiseman",
-                        "farmdawgnation",
-                        "halkeye",
-                        "jberglund-BSFT",
-                        "kohsuke",
-                        "kohsuke2",
-                        "martinvanzijl",
-                        "PauloMigAlmeida",
-                        "Sage-Pierce",
-                        "timja"));
+        assertTrue(admins.size() >= 12);
+        assertTrue(admins.stream().map(GHUser::getLogin).collect(Collectors.toList()).containsAll(List.of(
+                "alexanderrtaylor",
+                "asthinasthi",
+                "bitwiseman",
+                "farmdawgnation",
+                "halkeye",
+                "jberglund-BSFT",
+                "kohsuke",
+                "kohsuke2",
+                "martinvanzijl",
+                "PauloMigAlmeida",
+                "Sage-Pierce",
+                "timja")));
     }
 
     /**
@@ -748,22 +750,22 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         List<GHUser> admins = org.listOutsideCollaboratorsWithFilter("all").toList();
 
-        assertThat(admins, notNullValue());
+        assertNotNull(admins);
         // In case more are added in the future
-        assertThat(admins.size(), greaterThanOrEqualTo(12));
-        assertThat(admins.stream().map(GHUser::getLogin).collect(Collectors.toList()),
-                hasItems("alexanderrtaylor",
-                        "asthinasthi",
-                        "bitwiseman",
-                        "farmdawgnation",
-                        "halkeye",
-                        "jberglund-BSFT",
-                        "kohsuke",
-                        "kohsuke2",
-                        "martinvanzijl",
-                        "PauloMigAlmeida",
-                        "Sage-Pierce",
-                        "timja"));
+        assertTrue(admins.size() >= 12);
+        assertTrue(admins.stream().map(GHUser::getLogin).collect(Collectors.toList()).containsAll(List.of(
+                "alexanderrtaylor",
+                "asthinasthi",
+                "bitwiseman",
+                "farmdawgnation",
+                "halkeye",
+                "jberglund-BSFT",
+                "kohsuke",
+                "kohsuke2",
+                "martinvanzijl",
+                "PauloMigAlmeida",
+                "Sage-Pierce",
+                "timja")));
     }
 
     /**
@@ -778,11 +780,10 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
 
         List<GHTeam> securityManagers = org.listSecurityManagers().toList();
 
-        assertThat(securityManagers, notNullValue());
+        assertNotNull(securityManagers);
         // In case more are added in the future
-        assertThat(securityManagers.size(), greaterThanOrEqualTo(1));
-        assertThat(securityManagers.stream().map(GHTeam::getName).collect(Collectors.toList()),
-                hasItems("security team"));
+        assertTrue(securityManagers.size() >= 1);
+        assertTrue(securityManagers.stream().map(GHTeam::getName).collect(Collectors.toList()).contains("security team"));
     }
 
     /**

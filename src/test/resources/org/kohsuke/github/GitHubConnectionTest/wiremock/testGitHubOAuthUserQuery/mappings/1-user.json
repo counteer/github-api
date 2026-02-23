@@ -9,7 +9,7 @@
         "equalTo": "application/vnd.github+json"
       },
       "Authorization": {
-        "equalTo": "token super_secret_token"
+        "equalTo": "token {{REPLACE_WITH_TOKEN_PLACEHOLDER}}"
       }
     }
   },

@@ -130,15 +130,17 @@ public class GitHub {
         }
     }
 
-    private static class LoginLoadingUserAuthorizationProvider implements UserAuthorizationProvider {
+    private static final class LoginLoadingUserAuthorizationProvider
+            implements org.kohsuke.github.authorization.UserAuthorizationProvider {
+
         private final AuthorizationProvider authorizationProvider;
         private final GitHub gitHub;
-        private String login;
-        private boolean loginLoaded = false;
+        private volatile Optional<String> cachedLogin;
 
         LoginLoadingUserAuthorizationProvider(AuthorizationProvider authorizationProvider, GitHub gitHub) {
             this.gitHub = gitHub;
             this.authorizationProvider = authorizationProvider;
+            this.cachedLogin = Optional.empty();
         }
 
         @Override
@@ -147,20 +149,24 @@ public class GitHub {
         }
 
         @Override
-        public String getLogin() {
-            synchronized (this) {
-                if (!loginLoaded) {
-                    loginLoaded = true;
-                    try {
-                        GHMyself u = gitHub.setMyself();
-                        if (u != null) {
-                            login = u.getLogin();
+        public Optional<String> getLogin() {
+            Optional<String> local = cachedLogin;
+            if (local.isEmpty()) {
+                synchronized (this) {
+                    local = cachedLogin;
+                    if (local.isEmpty()) {
+                        try {
+                            GHMyself u = gitHub.setMyself();
+                            cachedLogin = Optional.ofNullable(u != null ? u.getLogin() : null);
+                            local = cachedLogin;
+                        } catch (IOException e) {
+                            cachedLogin = Optional.empty();
+                            local = cachedLogin;
                         }
-                    } catch (IOException e) {
                     }
                 }
-                return login;
             }
+            return local;
         }
     }
     private static final Logger LOGGER = Logger.getLogger(GitHub.class.getName());
@@ -394,8 +400,19 @@ public class GitHub {
         } else if (authorizationProvider instanceof ImmutableAuthorizationProvider
                 && authorizationProvider instanceof UserAuthorizationProvider) {
             UserAuthorizationProvider provider = (UserAuthorizationProvider) authorizationProvider;
-            if (provider.getLogin() == null && provider.getEncodedAuthorization() != null
-                    && provider.getEncodedAuthorization().startsWith("token")) {
+            // Only wrap if login is unknown (empty) but we have a token
+            Optional<String> login = Optional.empty();
+            try {
+                login = provider.getLogin();
+            } catch (IOException ignored) {
+                // treat as unknown login; we'll try to resolve it lazily
+            }
+            String encoded = null;
+            try {
+                encoded = provider.getEncodedAuthorization();
+            } catch (IOException ignored) {
+            }
+            if (login.isEmpty() && encoded != null && encoded.startsWith("token")) {
                 authorizationProvider = new LoginLoadingUserAuthorizationProvider(provider, this);
             }
         }

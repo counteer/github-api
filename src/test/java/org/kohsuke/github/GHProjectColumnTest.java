@@ -1,14 +1,14 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -33,7 +33,7 @@ public class GHProjectColumnTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @After
+    @AfterEach
     public void after() throws IOException {
         if (mockGitHub.isUseProxy()) {
             if (column != null) {
@@ -63,7 +63,7 @@ public class GHProjectColumnTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         project = gitHub.getOrganization(GITHUB_API_TEST_ORG).createProject("test-project", "This is a test project");
         column = project.createColumn("column-one");
@@ -74,7 +74,7 @@ public class GHProjectColumnTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void testCreatedColumn() {
-        assertThat(column.getName(), equalTo("column-one"));
+        assertEquals("column-one", column.getName());
     }
 
     /**
@@ -88,7 +88,7 @@ public class GHProjectColumnTest extends AbstractGitHubWireMockTest {
         column.delete();
         try {
             column = gitHub.getProjectColumn(column.getId());
-            assertThat(column, nullValue());
+            assertNull(column);
         } catch (FileNotFoundException e) {
             column = null;
         }
@@ -104,6 +104,6 @@ public class GHProjectColumnTest extends AbstractGitHubWireMockTest {
     public void testEditColumnName() throws IOException {
         column.setName("new-name");
         column = gitHub.getProjectColumn(column.getId());
-        assertThat(column.getName(), equalTo("new-name"));
+        assertEquals("new-name", column.getName());
     }
 }

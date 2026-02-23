@@ -5,7 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.AbstractGitHubWireMockTest;
 import org.kohsuke.github.connector.GitHubConnectorResponse.ByteArrayResponse;
 
@@ -21,17 +21,20 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.isA;
+import static org.kohsuke.github.connector.GitHubConnectorTestHelper.EMPTY_REQUEST;
 
 /**
  * Test GitHubConnectorResponse
  */
-public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
+class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
 
     // Extend ByteArrayResponse to preserve test coverage
-    private static record CustomBodyGitHubConnectorResponse(int statusCode, InputStream stream)
-            extends ByteArrayResponse {
-        CustomBodyGitHubConnectorResponse {
+    private static final class CustomBodyGitHubConnectorResponse extends ByteArrayResponse {
+        private final InputStream stream;
+
+        CustomBodyGitHubConnectorResponse(int statusCode, InputStream stream) {
             super(EMPTY_REQUEST, statusCode, new HashMap<>());
+            this.stream = stream;
         }
 
         @Override
@@ -39,46 +42,6 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
             return stream;
         }
     }
-
-    /**
-     * Empty request for response testing.
-     */
-    public static final GitHubConnectorRequest EMPTY_REQUEST = new GitHubConnectorRequest() {
-        @NotNull @Override
-        public Map<String, List<String>> allHeaders() {
-            return null;
-        }
-
-        @Nullable @Override
-        public InputStream body() {
-            return null;
-        }
-
-        @Nullable @Override
-        public String contentType() {
-            return null;
-        }
-
-        @Override
-        public boolean hasBody() {
-            return false;
-        }
-
-        @Nullable @Override
-        public String header(String name) {
-            return null;
-        }
-
-        @NotNull @Override
-        public String method() {
-            return null;
-        }
-
-        @NotNull @Override
-        public URL url() {
-            return null;
-        }
-    };
 
     /**
      * Instantiates a new GitHubConnectorResponseTest.
@@ -93,7 +56,7 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
      *             for failures
      */
     @Test
-    public void tesBodyStream_forced() throws Exception {
+    void tesBodyStream_forced() throws Exception {
         Exception e;
         GitHubConnectorResponse response = new CustomBodyGitHubConnectorResponse(200,
                 new ByteBufferBackedInputStream(ByteBuffer.wrap("Hello!".getBytes(StandardCharsets.UTF_8))));
@@ -121,7 +84,7 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
      *             for failures
      */
     @Test
-    public void tesBodyStream_rereadable() throws Exception {
+    void tesBodyStream_rereadable() throws Exception {
         Exception e;
         GitHubConnectorResponse response = new CustomBodyGitHubConnectorResponse(404,
                 new ByteBufferBackedInputStream(ByteBuffer.wrap("Hello!".getBytes(StandardCharsets.UTF_8))));
@@ -149,7 +112,7 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
      *             for failures
      */
     @Test
-    public void testBodyStream() throws Exception {
+    void testBodyStream() throws Exception {
         Exception e;
         GitHubConnectorResponse response = new CustomBodyGitHubConnectorResponse(200,
                 new ByteBufferBackedInputStream(ByteBuffer.wrap("Hello!".getBytes(StandardCharsets.UTF_8))));
@@ -187,7 +150,7 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
      *             for failures
      */
     @Test
-    public void testBodyStream_null() throws Exception {
+    void testBodyStream_null() throws Exception {
         Exception e;
         GitHubConnectorResponse response = new CustomBodyGitHubConnectorResponse(200, null);
         e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
@@ -212,7 +175,7 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
      *             for failures
      */
     @Test
-    public void testBodyStream_null_buffered() throws Exception {
+    void testBodyStream_null_buffered() throws Exception {
         Exception e;
         GitHubConnectorResponse response = new CustomBodyGitHubConnectorResponse(404, null);
         e = Assert.assertThrows(IOException.class, () -> response.bodyStream());

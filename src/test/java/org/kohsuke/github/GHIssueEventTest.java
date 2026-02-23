@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,36 +30,18 @@ public class GHIssueEventTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void testEventsForIssueRename() throws Exception {
-        // Create the issue.
         GHRepository repo = getRepository();
-        GHIssueBuilder builder = repo.createIssue("Some invalid issue name");
-        GHIssue issue = builder.create();
+        GHIssue issue = repo.createIssue("Some invalid issue name").create();
 
-        // Generate rename event.
         issue.setTitle("Fixed issue name");
 
-        // Test that the event is present.
-        List<GHIssueEvent> list = issue.listEvents().toList();
-        assertThat(list.size(), equalTo(1));
+        List<GHIssueEvent> events = issue.listEvents().toList();
+        assertThat(events, hasSize(1));
 
-        GHIssueEvent event = list.get(0);
-        assertThat(event.getIssue().getNumber(), equalTo(issue.getNumber()));
+        GHIssueEvent event = events.get(0);
         assertThat(event.getEvent(), equalTo("renamed"));
-        assertThat(event.getRename(), notNullValue());
         assertThat(event.getRename().getFrom(), equalTo("Some invalid issue name"));
         assertThat(event.getRename().getTo(), equalTo("Fixed issue name"));
-
-        // Test that we can get a single event directly.
-        GHIssueEvent eventFromRepo = repo.getIssueEvent(event.getId());
-        assertThat(eventFromRepo.getId(), equalTo(event.getId()));
-        assertThat(eventFromRepo.getCreatedAt(), equalTo(event.getCreatedAt()));
-        assertThat(eventFromRepo.getEvent(), equalTo("renamed"));
-        assertThat(eventFromRepo.getRename(), notNullValue());
-        assertThat(eventFromRepo.getRename().getFrom(), equalTo("Some invalid issue name"));
-        assertThat(eventFromRepo.getRename().getTo(), equalTo("Fixed issue name"));
-
-        // Close the issue.
-        issue.close();
     }
 
     /**

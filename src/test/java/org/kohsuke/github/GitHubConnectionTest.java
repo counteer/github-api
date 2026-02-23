@@ -14,9 +14,11 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -74,7 +76,7 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
 
         // assertThat(builder.authorizationProvider, instanceOf(UserAuthorizationProvider.class));
         assertThat(builder.authorizationProvider.getEncodedAuthorization(), equalTo("token bogus oauth token string"));
-        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), nullValue());
+        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), equalTo(Optional.empty()));
 
         props.put("login", "bogus login");
         setupEnvironment(props);
@@ -82,7 +84,8 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
 
         // assertThat(builder.authorizationProvider, instanceOf(UserAuthorizationProvider.class));
         assertThat(builder.authorizationProvider.getEncodedAuthorization(), equalTo("token bogus oauth token string"));
-        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), equalTo("bogus login"));
+        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(),
+                equalTo(Optional.of("bogus login")));
 
         props.put("jwt", "bogus jwt token string");
         setupEnvironment(props);
@@ -132,7 +135,7 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
             // assertThat(builder.authorizationProvider, instanceOf(UserAuthorizationProvider.class));
             assertThat(builder.authorizationProvider.getEncodedAuthorization(),
                     equalTo("token bogus oauth token string"));
-            assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), nullValue());
+            assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), equalTo(Optional.empty()));
 
             props.put("login", "bogus login");
             setupPropertyFile(props);
@@ -141,7 +144,8 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
             // assertThat(builder.authorizationProvider, instanceOf(UserAuthorizationProvider.class));
             assertThat(builder.authorizationProvider.getEncodedAuthorization(),
                     equalTo("token bogus oauth token string"));
-            assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), equalTo("bogus login"));
+            assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(),
+                    equalTo(Optional.of("bogus login")));
 
             props.put("jwt", "bogus jwt token string");
             setupPropertyFile(props);
@@ -179,7 +183,7 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
 
         assertThat(builder.authorizationProvider, instanceOf(UserAuthorizationProvider.class));
         assertThat(builder.authorizationProvider.getEncodedAuthorization(), equalTo("token bogus oauth token string"));
-        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), nullValue());
+        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), equalTo(Optional.empty()));
 
         props.put("login", "bogus login");
         setupEnvironment(props);
@@ -187,7 +191,8 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
 
         assertThat(builder.authorizationProvider, instanceOf(UserAuthorizationProvider.class));
         assertThat(builder.authorizationProvider.getEncodedAuthorization(), equalTo("token bogus oauth token string"));
-        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), equalTo("bogus login"));
+        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(),
+                equalTo(Optional.of("bogus login")));
 
         props.put("jwt", "bogus jwt token string");
         setupEnvironment(props);
@@ -341,13 +346,14 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
         GitHubBuilder builder = new GitHubBuilder().withAppInstallationToken("bogus app token");
         // assertThat(builder.authorizationProvider, instanceOf(UserAuthorizationProvider.class));
         assertThat(builder.authorizationProvider.getEncodedAuthorization(), equalTo("token bogus app token"));
-        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(), is(emptyString()));
+        assertThat(((UserAuthorizationProvider) builder.authorizationProvider).getLogin(),
+                equalTo(Optional.of("")));
 
         // test authorization header is set as in the RFC6749
         GitHub github = builder.build();
         // change this to get a request
         assertThat(github.getClient().getEncodedAuthorization(), equalTo("token bogus app token"));
-        assertThat(github.getClient().getLogin(), is(emptyString()));
+        assertThat(github.getClient().getLogin(), equalTo(""));
     }
 
     /**

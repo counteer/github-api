@@ -1,14 +1,16 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -30,8 +32,8 @@ public class GHMilestoneTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
-    @After
+    @BeforeEach
+    @AfterEach
     public void cleanUp() throws Exception {
         // Cleanup is only needed when proxying
         if (!mockGitHub.isUseProxy()) {
@@ -61,12 +63,12 @@ public class GHMilestoneTest extends AbstractGitHubWireMockTest {
         // set the milestone
         issue.setMilestone(milestone);
         issue = repo.getIssue(issue.getNumber()); // force reload
-        assertThat(issue.getMilestone().getNumber(), equalTo(milestone.getNumber()));
+        assertEquals(milestone.getNumber(), issue.getMilestone().getNumber());
 
         // remove the milestone
         issue.setMilestone(null);
         issue = repo.getIssue(issue.getNumber()); // force reload
-        assertThat(issue.getMilestone(), nullValue());
+        assertNull(issue.getMilestone());
     }
 
     /**

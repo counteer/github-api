@@ -25,14 +25,13 @@
 package org.kohsuke.github;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URL;
 
-import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GHLicenseTest.
  *
@@ -57,16 +56,12 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
     public void checkRepositoryFullLicense() throws IOException {
         GHRepository repo = gitHub.getRepository("hub4j/github-api");
         GHLicense license = repo.getLicense();
-        assertThat("The license is populated", license, notNullValue());
-        assertThat("The key is correct", license.getKey(), equalTo("mit"));
-        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("MIT")));
-        assertThat("The name is correct", license.getName(), equalTo("MIT License"));
-        assertThat("The URL is correct",
-                license.getUrl(),
-                equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit")));
-        assertThat("The HTML URL is correct",
-                license.getHtmlUrl(),
-                equalTo(new URL("http://choosealicense.com/licenses/mit/")));
+        assertNotNull(license, "The license is populated");
+        assertEquals("mit", license.getKey(), "The key is correct");
+        assertEquals("MIT", license.getSpdxId(), "The SPDX ID is correct");
+        assertEquals("MIT License", license.getName(), "The name is correct");
+        assertEquals(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit"), license.getUrl(), "The URL is correct");
+        assertEquals(new URL("http://choosealicense.com/licenses/mit/"), license.getHtmlUrl(), "The HTML URL is correct");
     }
 
     /**
@@ -80,13 +75,11 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
     public void checkRepositoryLicense() throws IOException {
         GHRepository repo = gitHub.getRepository("hub4j/github-api");
         GHLicense license = repo.getLicense();
-        assertThat("The license is populated", license, notNullValue());
-        assertThat("The key is correct", license.getKey(), equalTo("mit"));
-        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("MIT")));
-        assertThat("The name is correct", license.getName(), equalTo("MIT License"));
-        assertThat("The URL is correct",
-                license.getUrl(),
-                equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit")));
+        assertNotNull(license, "The license is populated");
+        assertEquals("mit", license.getKey(), "The key is correct");
+        assertEquals("MIT", license.getSpdxId(), "The SPDX ID is correct");
+        assertEquals("MIT License", license.getName(), "The name is correct");
+        assertEquals(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit"), license.getUrl(), "The URL is correct");
     }
 
     /**
@@ -99,13 +92,11 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
     public void checkRepositoryLicenseAtom() throws IOException {
         GHRepository repo = gitHub.getRepository("atom/atom");
         GHLicense license = repo.getLicense();
-        assertThat("The license is populated", license, notNullValue());
-        assertThat("The key is correct", license.getKey(), equalTo("mit"));
-        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("MIT")));
-        assertThat("The name is correct", license.getName(), equalTo("MIT License"));
-        assertThat("The URL is correct",
-                license.getUrl(),
-                equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit")));
+        assertNotNull(license, "The license is populated");
+        assertEquals("mit", license.getKey(), "The key is correct");
+        assertEquals("MIT", license.getSpdxId(), "The SPDX ID is correct");
+        assertEquals("MIT License", license.getName(), "The name is correct");
+        assertEquals(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit"), license.getUrl(), "The URL is correct");
     }
 
     /**
@@ -119,13 +110,14 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
     public void checkRepositoryLicenseContent() throws IOException {
         GHRepository repo = gitHub.getRepository("pomes/pomes");
         GHContent content = repo.getLicenseContent();
-        assertThat("The license content is populated", content, notNullValue());
-        assertThat("The type is 'file'", content.getType(), equalTo("file"));
-        assertThat("The license file is 'LICENSE'", content.getName(), equalTo("LICENSE"));
+        assertNotNull(content, "The license content is populated");
+        assertEquals("file", content.getType(), "The type is 'file'");
+        assertEquals("LICENSE", content.getName(), "The license file is 'LICENSE'");
 
         if (content.getEncoding().equals("base64")) {
             String licenseText = new String(IOUtils.toByteArray(content.read()));
-            assertThat("The license appears to be an Apache License", licenseText.contains("Apache License"));
+            assertTrue(licenseText.contains("Apache License"),
+                    "The license appears to be an Apache License");
         } else {
             fail("Expected the license to be Base64 encoded but instead it was " + content.getEncoding());
         }
@@ -142,10 +134,10 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
     public void checkRepositoryLicenseForIndeterminate() throws IOException {
         GHRepository repo = gitHub.getRepository("bndtools/bnd");
         GHLicense license = repo.getLicense();
-        assertThat("The license is populated", license, notNullValue());
-        assertThat(license.getKey(), equalTo("other"));
-        assertThat(license.getDescription(), is(nullValue()));
-        assertThat(license.getUrl(), is(nullValue()));
+        assertNotNull(license, "The license is populated");
+        assertEquals("other", license.getKey());
+        assertNull(license.getDescription());
+        assertNull(license.getUrl());
     }
 
     /**
@@ -159,13 +151,11 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
     public void checkRepositoryLicensePomes() throws IOException {
         GHRepository repo = gitHub.getRepository("pomes/pomes");
         GHLicense license = repo.getLicense();
-        assertThat("The license is populated", license, notNullValue());
-        assertThat("The key is correct", license.getKey(), equalTo("apache-2.0"));
-        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("Apache-2.0")));
-        assertThat("The name is correct", license.getName(), equalTo("Apache License 2.0"));
-        assertThat("The URL is correct",
-                license.getUrl(),
-                equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/apache-2.0")));
+        assertNotNull(license, "The license is populated");
+        assertEquals("apache-2.0", license.getKey(), "The key is correct");
+        assertEquals("Apache-2.0", license.getSpdxId(), "The SPDX ID is correct");
+        assertEquals("Apache License 2.0", license.getName(), "The name is correct");
+        assertEquals(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/apache-2.0"), license.getUrl(), "The URL is correct");
     }
 
     /**
@@ -179,7 +169,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
     public void checkRepositoryWithoutLicense() throws IOException {
         GHRepository repo = gitHub.getRepository(GITHUB_API_TEST_ORG + "/empty");
         GHLicense license = repo.getLicense();
-        assertThat("There is no license", license, nullValue());
+        assertNull(license, "There is no license");
     }
 
     /**
@@ -193,22 +183,23 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
     public void getLicense() throws IOException {
         String key = "mit";
         GHLicense license = gitHub.getLicense(key);
-        assertThat(license, notNullValue());
-        assertThat("The name is correct", license.getName(), equalTo("MIT License"));
-        assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("MIT")));
-        assertThat("The HTML URL is correct",
+        assertNotNull(license);
+        assertEquals("MIT License", license.getName(), "The name is correct");
+        assertEquals("MIT", license.getSpdxId(), "The SPDX ID is correct");
+        assertEquals(new URL("http://choosealicense.com/licenses/mit/"),
                 license.getHtmlUrl(),
-                equalTo(new URL("http://choosealicense.com/licenses/mit/")));
-        assertThat(license.getBody(), startsWith("MIT License\n" + "\n" + "Copyright (c) [year] [fullname]\n\n"));
-        assertThat(license.getForbidden(), is(empty()));
-        assertThat(license.getPermitted(), is(empty()));
-        assertThat(license.getRequired(), is(empty()));
-        assertThat(license.getImplementation(),
-                equalTo("Create a text file (typically named LICENSE or LICENSE.txt) in the root of your source code and copy the text of the license into the file. Replace [year] with the current year and [fullname] with the name (or names) of the copyright holders."));
-        assertThat(license.getCategory(), nullValue());
-        assertThat(license.isFeatured(), equalTo(true));
-        assertThat(license.equals(null), equalTo(false));
-        assertThat(license.equals(gitHub.getLicense(key)), equalTo(true));
+                "The HTML URL is correct");
+        assertTrue(license.getBody().startsWith("MIT License\n" + "\n" + "Copyright (c) [year] [fullname]\n\n"));
+        assertTrue(license.getForbidden().isEmpty());
+        assertTrue(license.getPermitted().isEmpty());
+        assertTrue(license.getRequired().isEmpty());
+        assertEquals(
+                "Create a text file (typically named LICENSE or LICENSE.txt) in the root of your source code and copy the text of the license into the file. Replace [year] with the current year and [fullname] with the name (or names) of the copyright holders.",
+                license.getImplementation());
+        assertNull(license.getCategory());
+        assertTrue(license.isFeatured());
+        assertFalse(license.equals(null));
+        assertTrue(license.equals(gitHub.getLicense(key)));
     }
 
     /**
@@ -217,7 +208,8 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
     @Test
     public void listLicenses() {
         Iterable<GHLicense> licenses = gitHub.listLicenses();
-        assertThat(licenses, is(not(emptyIterable())));
+        assertNotNull(licenses);
+        assertTrue(licenses.iterator().hasNext());
     }
 
     /**
@@ -231,7 +223,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         PagedIterable<GHLicense> licenses = gitHub.listLicenses();
         for (GHLicense lic : licenses) {
             if (lic.getKey().equals("mit")) {
-                assertThat(lic.getUrl(), equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit")));
+                assertEquals(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit"), lic.getUrl());
                 return;
             }
         }

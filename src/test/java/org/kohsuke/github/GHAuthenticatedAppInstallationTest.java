@@ -2,6 +2,8 @@ package org.kohsuke.github;
 
 import org.junit.Test;
 import org.kohsuke.github.authorization.AppInstallationAuthorizationProvider;
+import org.kohsuke.github.authorization.AuthorizationProvider;
+import org.kohsuke.github.authorization.ImmutableAuthorizationProvider;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +16,13 @@ import static org.hamcrest.Matchers.equalTo;
  * The Class GHAuthenticatedAppInstallationTest.
  */
 public class GHAuthenticatedAppInstallationTest extends AbstractGHAppInstallationTest {
+
+    private static final class TestAppInstallationAuthorizationProvider extends AppInstallationAuthorizationProvider {
+        TestAppInstallationAuthorizationProvider(AppInstallationProvider appInstallationProvider,
+                                                AuthorizationProvider authProvider) {
+            super(appInstallationProvider, authProvider);
+        }
+    }
 
     /**
      * Create default GHAuthenticatedAppInstallationTest instance
@@ -45,9 +54,11 @@ public class GHAuthenticatedAppInstallationTest extends AbstractGHAppInstallatio
      */
     @Override
     protected GitHubBuilder getGitHubBuilder() {
-        AppInstallationAuthorizationProvider provider = new AppInstallationAuthorizationProvider(
-                app -> app.getInstallationByOrganization("hub4j-test-org"),
-                jwtProvider1);
+        AuthorizationProvider jwtProvider = ImmutableAuthorizationProvider.fromJwtToken("dummy");
+        AppInstallationAuthorizationProvider provider =
+                new TestAppInstallationAuthorizationProvider(
+                        app -> app.getInstallationByOrganization("hub4j-test-org"),
+                        jwtProvider);
         return super.getGitHubBuilder().withAuthorizationProvider(provider);
     }
 

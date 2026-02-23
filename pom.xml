@@ -71,7 +71,10 @@
     <jacoco.haltOnFailure>false</jacoco.haltOnFailure>
 
     <jacoco.surefire.argLine></jacoco.surefire.argLine>
+    <java.version>25</java.version>
     <jjwt.suite.version>0.13.0</jjwt.suite.version>
+    <maven.compiler.source>25</maven.compiler.source>
+    <maven.compiler.target>25</maven.compiler.target>
     <!-- This project was registered before 2021, so it uses the old server. -->
     <nexus.serverUrl>https://ossrh-staging-api.central.sonatype.com</nexus.serverUrl>
     <okhttp3.version>4.12.0</okhttp3.version>
@@ -82,9 +85,6 @@
     <spotbugs.version>4.8.6</spotbugs.version>
     <spring.boot.version>3.4.5</spring.boot.version>
     <surefire.argLine></surefire.argLine>
-    <maven.compiler.source>25</maven.compiler.source>
-    <maven.compiler.target>25</maven.compiler.target>
-    <java.version>25</java.version>
   </properties>
 
   <dependencyManagement>
@@ -321,6 +321,14 @@
           </executions>
         </plugin>
         <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version>
+          <configuration>
+            <source>25</source>
+            <target>25</target>
+          </configuration>
+        </plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-gpg-plugin</artifactId>
           <version>3.2.8</version>
@@ -470,15 +478,6 @@
             <autoReleaseAfterClose>true</autoReleaseAfterClose>
           </configuration>
         </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.11.0</version>
-          <configuration>
-            <source>25</source>
-            <target>25</target>
-            <release>25</release>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -599,9 +598,9 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.14.0</version>
         <configuration>
-          <source>11</source>
-          <target>11</target>
-          <release>11</release>
+          <source>25</source>
+          <target>25</target>
+          <release>25</release>
           <annotationProcessorPaths>
             <annotationProcessorPath>
               <groupId>org.jenkins-ci</groupId>

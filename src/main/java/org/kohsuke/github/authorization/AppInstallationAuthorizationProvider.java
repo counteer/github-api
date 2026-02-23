@@ -15,10 +15,10 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 /**
- * A sealed AuthorizationProvider that performs automatic token refresh for an organization's AppInstallation.
+ * An AuthorizationProvider that performs automatic token refresh for an organization's AppInstallation.
  */
-public sealed class AppInstallationAuthorizationProvider extends GitHub.DependentAuthorizationProvider
-        permits OrgAppInstallationAuthorizationProvider {
+public abstract class AppInstallationAuthorizationProvider
+        extends GitHub.DependentAuthorizationProvider {
 
     /**
      * Provides an interface that returns an app to be used by an AppInstallationAuthorizationProvider

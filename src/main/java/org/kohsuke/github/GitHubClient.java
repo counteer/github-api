@@ -577,9 +577,8 @@ class GitHubClient {
         try {
             return getLogin() == null && this.authorizationProvider.getEncodedAuthorization() == null;
         } catch (IOException e) {
-            // An exception here means that the provider failed to provide authorization parameters,
-            // basically meaning the same as "no auth"
-            return false;
+            // Provider failed to provide authorization parameters; treat as no auth
+            return true;
         }
     }
 
@@ -931,11 +930,14 @@ class GitHubClient {
             if (this.authorizationProvider instanceof UserAuthorizationProvider
                     && this.authorizationProvider.getEncodedAuthorization() != null) {
 
-                UserAuthorizationProvider userAuthorizationProvider = (UserAuthorizationProvider) this.authorizationProvider;
+                UserAuthorizationProvider userAuthorizationProvider =
+                        (UserAuthorizationProvider) this.authorizationProvider;
 
-                return userAuthorizationProvider.getLogin();
+                Optional<String> login = userAuthorizationProvider.getLogin();
+                return login.orElse(null);
             }
         } catch (IOException e) {
+            // ignore and fall through to null
         }
         return null;
     }
@@ -1015,9 +1017,8 @@ class GitHubClient {
      */
     @Nonnull
     GHRateLimit rateLimit(@Nonnull RateLimitTarget rateLimitTarget) throws IOException {
-        GHRateLimit result = rateLimit.get();
         // Most of the time rate limit is not expired, so try to avoid locking.
-        if (result.getRecord(rateLimitTarget).isExpired()) {
+        if (rateLimit.get().getRecord(rateLimitTarget).isExpired()) {
             // if the rate limit is expired, synchronize to ensure
             // only one call to getRateLimit() is made to refresh it.
             synchronized (this) {
@@ -1025,9 +1026,8 @@ class GitHubClient {
                     getRateLimit(rateLimitTarget);
                 }
             }
-            result = rateLimit.get();
         }
-        return result;
+        return rateLimit.get();
     }
 
     /**

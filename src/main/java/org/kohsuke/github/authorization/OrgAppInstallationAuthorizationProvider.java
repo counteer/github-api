@@ -6,8 +6,7 @@ import org.kohsuke.github.BetaApi;
  * A sealed AuthorizationProvider that performs automatic token refresh for an organization's AppInstallation.
  */
 @Deprecated
-public sealed class OrgAppInstallationAuthorizationProvider extends AppInstallationAuthorizationProvider
-        permits AppInstallationAuthorizationProvider {
+public final class OrgAppInstallationAuthorizationProvider extends AppInstallationAuthorizationProvider {
 
     /**
      * Provides an AuthorizationProvider that performs automatic token refresh, based on an previously authenticated

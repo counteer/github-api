@@ -1,11 +1,13 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -31,8 +33,8 @@ public class GHPersonTest extends AbstractGitHubWireMockTest {
     public void testFieldsForOrganization() throws Exception {
         GHRepository repo = getRepository();
         GHUser owner = repo.getOwner();
-        assertThat(owner.getType(), equalTo("Organization"));
-        assertThat(owner.isSiteAdmin(), notNullValue());
+        assertEquals("Organization", owner.getType());
+        assertNotNull(owner.isSiteAdmin());
     }
 
     /**
@@ -44,8 +46,8 @@ public class GHPersonTest extends AbstractGitHubWireMockTest {
     @Test
     public void testFieldsForUser() throws Exception {
         GHUser user = gitHub.getUser("kohsuke2");
-        assertThat(user.getType(), equalTo("User"));
-        assertThat(user.isSiteAdmin(), notNullValue());
+        assertEquals("User", user.getType());
+        assertNotNull(user.isSiteAdmin());
     }
 
     private GHRepository getRepository(GitHub gitHub) throws IOException {

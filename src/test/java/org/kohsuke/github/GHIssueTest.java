@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -19,6 +19,9 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -50,7 +53,7 @@ public class GHIssueTest extends AbstractGitHubWireMockTest {
         String addedLabel3 = "addLabels_label_name_3";
 
         List<GHLabel> resultingLabels = issue.addLabels(addedLabel1);
-        assertThat(resultingLabels.size(), equalTo(1));
+        assertThat(resultingLabels, hasSize(1));
         GHLabel ghLabel = resultingLabels.get(0);
         assertThat(ghLabel.getName(), equalTo(addedLabel1));
 
@@ -59,7 +62,7 @@ public class GHIssueTest extends AbstractGitHubWireMockTest {
         // multiple labels can be added with one api call
         assertThat(mockGitHub.getRequestCount(), equalTo(requestCount + 1));
 
-        assertThat(resultingLabels.size(), equalTo(3));
+        assertThat(resultingLabels, hasSize(3));
         assertThat(resultingLabels,
                 containsInAnyOrder(hasProperty("name", equalTo(addedLabel1)),
                         hasProperty("name", equalTo(addedLabel2)),
@@ -67,7 +70,7 @@ public class GHIssueTest extends AbstractGitHubWireMockTest {
 
         // Adding a label which is already present does not throw an error
         resultingLabels = issue.addLabels(ghLabel);
-        assertThat(resultingLabels.size(), equalTo(3));
+        assertThat(resultingLabels, hasSize(3));
     }
 
     /**
@@ -102,8 +105,8 @@ public class GHIssueTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
-    @After
+    @BeforeEach
+    @AfterEach
     public void cleanUp() throws Exception {
         // Cleanup is only needed when proxying
         if (!mockGitHub.isUseProxy()) {
@@ -168,7 +171,7 @@ public class GHIssueTest extends AbstractGitHubWireMockTest {
         String name = "createIssue";
         GHRepository repo = getRepository();
         GHIssue issue = repo.createIssue(name).body("## test").create();
-        assertThat(issue.getTitle(), equalTo(name));
+        assertEquals(name, issue.getTitle());
     }
 
     /**

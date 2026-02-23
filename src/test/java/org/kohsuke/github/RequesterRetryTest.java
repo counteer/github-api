@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.kohsuke.github.connector.GitHubConnector;
 import org.kohsuke.github.connector.GitHubConnectorRequest;
 import org.kohsuke.github.connector.GitHubConnectorResponse;
-import org.kohsuke.github.connector.GitHubConnectorResponseTest;
 import org.kohsuke.github.extras.HttpClientGitHubConnector;
 import org.kohsuke.github.extras.okhttp3.OkHttpGitHubConnector;
 
@@ -26,6 +25,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import static org.hamcrest.Matchers.*;
+import static org.kohsuke.github.connector.GitHubConnectorTestHelper.EMPTY_REQUEST;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -57,7 +57,7 @@ public class RequesterRetryTest extends AbstractGitHubWireMockTest {
         private final GitHubConnectorResponse wrapped;
 
         GitHubConnectorResponseWrapper(GitHubConnectorResponse response) {
-            super(GitHubConnectorResponseTest.EMPTY_REQUEST, -1, new HashMap<>());
+            super(EMPTY_REQUEST, -1, new HashMap<>());
             wrapped = response;
         }
 

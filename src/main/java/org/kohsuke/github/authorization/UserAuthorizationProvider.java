@@ -1,5 +1,6 @@
 package org.kohsuke.github.authorization;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -14,9 +15,8 @@ public interface UserAuthorizationProvider extends AuthorizationProvider {
     /**
      * Gets the user login name.
      *
-     * @return the user login for this provider, or {@code Optional.empty()} if the login value should be queried from
-     *         the "/user" endpoint.
+     * @return an {@link Optional} containing the user login for this provider, or {@link Optional#empty()} if the
+     *         login value should be queried from the "/user" endpoint or is otherwise unknown.
      */
-    @Override
-    Optional<String> getLogin();
+    Optional<String> getLogin() throws IOException;
 }

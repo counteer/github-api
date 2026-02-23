@@ -2,6 +2,7 @@ package org.kohsuke.github;
 
 import org.junit.Test;
 import org.kohsuke.github.authorization.AppInstallationAuthorizationProvider;
+import org.kohsuke.github.authorization.AuthorizationProvider;
 import org.kohsuke.github.authorization.ImmutableAuthorizationProvider;
 import org.kohsuke.github.authorization.OrgAppInstallationAuthorizationProvider;
 
@@ -17,6 +18,16 @@ import static org.hamcrest.CoreMatchers.startsWith;
  * The Class AppInstallationAuthorizationProviderTest.
  */
 public class AppInstallationAuthorizationProviderTest extends AbstractGHAppInstallationTest {
+
+    /**
+     * Simple concrete test implementation using an AppInstallationProvider lambda.
+     */
+    private static final class TestAppInstallationAuthorizationProvider extends AppInstallationAuthorizationProvider {
+        TestAppInstallationAuthorizationProvider(AppInstallationProvider appInstallationProvider,
+                                                 AuthorizationProvider authProvider) {
+            super(appInstallationProvider, authProvider);
+        }
+    }
 
     /**
      * Instantiates a new org app installation authorization provider test.
@@ -51,7 +62,7 @@ public class AppInstallationAuthorizationProviderTest extends AbstractGHAppInsta
      */
     @Test
     public void validJWTTokenAllowsOauthTokenRequest() throws IOException {
-        AppInstallationAuthorizationProvider provider = new AppInstallationAuthorizationProvider(
+        AppInstallationAuthorizationProvider provider = new TestAppInstallationAuthorizationProvider(
                 app -> app.getInstallationByOrganization("hub4j-test-org"),
                 ImmutableAuthorizationProvider.fromJwtToken("bogus-valid-token"));
         gitHub = getGitHubBuilder().withAuthorizationProvider(provider)
@@ -71,7 +82,7 @@ public class AppInstallationAuthorizationProviderTest extends AbstractGHAppInsta
      */
     @Test
     public void validJWTTokenWhenLookingUpAppById() throws IOException {
-        AppInstallationAuthorizationProvider provider = new AppInstallationAuthorizationProvider(
+        AppInstallationAuthorizationProvider provider = new TestAppInstallationAuthorizationProvider(
                 // https://github.com/organizations/hub4j-test-org/settings/installations/12129901
                 app -> app.getInstallationById(12129901L),
                 jwtProvider1);
