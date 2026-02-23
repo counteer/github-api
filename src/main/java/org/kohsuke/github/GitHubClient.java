@@ -50,18 +50,17 @@ import static java.util.logging.Level.*;
  */
 class GitHubClient {
 
-    private static class GHApiInfo {
-        private String rateLimitUrl;
+    private record GHApiInfo(@com.fasterxml.jackson.annotation.JsonProperty("rate_limit_url") String rateLimitUrl) {
 
         void check(String apiUrl) throws IOException {
-            if (rateLimitUrl == null)
+            if (rateLimitUrl() == null)
                 throw new IOException(apiUrl + " doesn't look like GitHub API URL");
 
             // make sure that the URL is legitimate
             try {
-                URI.create(rateLimitUrl).toURL();
+                URI.create(rateLimitUrl()).toURL();
             } catch (IllegalArgumentException e) {
-                throw new IOException("Invalid URL: " + rateLimitUrl, e);
+                throw new IOException("Invalid URL: " + rateLimitUrl(), e);
             }
         }
     }

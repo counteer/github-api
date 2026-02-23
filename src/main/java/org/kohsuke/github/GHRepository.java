@@ -247,8 +247,9 @@ public class GHRepository extends GHObject {
     private record Topics(@JsonProperty("names") List<String> names) {
     }
 
-    static class GHRepoPermission {
-        boolean pull, push, admin;
+    static record GHRepoPermission(@JsonProperty("pull") boolean pull,
+            @JsonProperty("push") boolean push,
+            @JsonProperty("admin") boolean admin) {
     }
 
     /**
@@ -2293,7 +2294,7 @@ public class GHRepository extends GHObject {
      * @return the boolean
      */
     public boolean hasAdminAccess() {
-        return permissions != null && permissions.admin;
+        return permissions != null && permissions.admin();
     }
 
     /**
@@ -2382,7 +2383,7 @@ public class GHRepository extends GHObject {
      * @return the boolean
      */
     public boolean hasPullAccess() {
-        return permissions != null && permissions.pull;
+        return permissions != null && permissions.pull();
     }
 
     /**
@@ -2391,7 +2392,7 @@ public class GHRepository extends GHObject {
      * @return the boolean
      */
     public boolean hasPushAccess() {
-        return permissions != null && permissions.push;
+        return permissions != null && permissions.push();
     }
 
     /**

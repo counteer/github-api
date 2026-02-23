@@ -487,12 +487,8 @@ public class GHBranchProtection extends GitHubInteractiveObject {
         }
     }
 
-    private static class RequiredSignatures {
-        @JsonProperty
-        private boolean enabled;
-
-        @JsonProperty
-        private String url;
+    private record RequiredSignatures(@JsonProperty("enabled") boolean enabled,
+            @JsonProperty("url") String url) {
 
         /**
          * Gets url.
@@ -500,7 +496,7 @@ public class GHBranchProtection extends GitHubInteractiveObject {
          * @return the url
          */
         public String getUrl() {
-            return url;
+            return url();
         }
 
         /**
@@ -509,7 +505,7 @@ public class GHBranchProtection extends GitHubInteractiveObject {
          * @return the boolean
          */
         public boolean isEnabled() {
-            return enabled;
+            return enabled();
         }
     }
 
@@ -666,7 +662,7 @@ public class GHBranchProtection extends GitHubInteractiveObject {
      *             the io exception
      */
     public boolean getRequiredSignatures() throws IOException {
-        return requester().withUrlPath(url + REQUIRE_SIGNATURES_URI).fetch(RequiredSignatures.class).enabled;
+        return requester().withUrlPath(url + REQUIRE_SIGNATURES_URI).fetch(RequiredSignatures.class).enabled();
     }
 
     /**
