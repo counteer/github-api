@@ -846,7 +846,8 @@ public class GHIssue extends GHObject implements Reactable {
         if (owner == null) {
             // Issues returned from search to do not have an owner. Attempt to use url.
             final URL url = Objects.requireNonNull(getUrl(), "Missing instance URL!");
-            return StringUtils.prependIfMissing(url.toString().replace(root().getApiUrl(), ""), "/");
+            String path = url.toString().replace(root().getApiUrl(), "");
+            return path.startsWith("/") ? path : "/" + path;
         }
         GHRepository repo = getRepository();
         return "/repos/" + repo.getOwnerName() + "/" + repo.getName() + "/issues/" + number;

@@ -515,7 +515,8 @@ public class GHTeam extends GHObject implements Refreshable {
         if (organization == null) {
             // Teams returned from pull requests to do not have an organization. Attempt to use url.
             final URL url = Objects.requireNonNull(getUrl(), "Missing instance URL!");
-            return StringUtils.prependIfMissing(url.toString().replace(root().getApiUrl(), ""), "/") + tail;
+            String path = url.toString().replace(root().getApiUrl(), "");
+            return (path.startsWith("/") ? path : "/" + path) + tail;
         }
 
         return "/organizations/" + organization.getId() + "/team/" + getId() + tail;

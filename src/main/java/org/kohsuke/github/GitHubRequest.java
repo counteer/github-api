@@ -523,7 +523,7 @@ public class GitHubRequest implements GitHubConnectorRequest {
                 tailUrlPath += "/" + String.join("/", urlPathItems);
             }
 
-            tailUrlPath = StringUtils.prependIfMissing(tailUrlPath, "/");
+            tailUrlPath = tailUrlPath.startsWith("/") ? tailUrlPath : "/" + tailUrlPath;
 
             this.urlPath = urlPathEncode(tailUrlPath);
             return (B) this;

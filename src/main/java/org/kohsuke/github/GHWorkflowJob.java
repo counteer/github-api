@@ -326,7 +326,8 @@ public class GHWorkflowJob extends GHObject {
         if (owner == null) {
             // Workflow runs returned from search to do not have an owner. Attempt to use url.
             final URL url = Objects.requireNonNull(getUrl(), "Missing instance URL!");
-            return StringUtils.prependIfMissing(url.toString().replace(root().getApiUrl(), ""), "/");
+            String path = url.toString().replace(root().getApiUrl(), "");
+            return path.startsWith("/") ? path : "/" + path;
 
         }
         return "/repos/" + owner.getOwnerName() + "/" + owner.getName() + "/actions/jobs/" + getId();

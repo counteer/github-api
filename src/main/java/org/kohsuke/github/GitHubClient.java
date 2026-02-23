@@ -34,7 +34,6 @@ import static java.net.HttpURLConnection.HTTP_MOVED_TEMP;
 import static java.net.HttpURLConnection.HTTP_NOT_MODIFIED;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static java.util.logging.Level.*;
-import static org.apache.commons.lang3.StringUtils.defaultString;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -59,7 +58,11 @@ class GitHubClient {
                 throw new IOException(apiUrl + " doesn't look like GitHub API URL");
 
             // make sure that the URL is legitimate
-            new URL(rateLimitUrl);
+            try {
+                URI.create(rateLimitUrl).toURL();
+            } catch (IllegalArgumentException e) {
+                throw new IOException("Invalid URL: " + rateLimitUrl, e);
+            }
         }
     }
 
@@ -271,7 +274,8 @@ class GitHubClient {
 
         if (request.hasBody()) {
             if (request.body() != null) {
-                builder.contentType(defaultString(request.contentType(), "application/x-www-form-urlencoded"));
+                builder.contentType(
+                        request.contentType() != null ? request.contentType() : "application/x-www-form-urlencoded");
             } else {
                 builder.contentType("application/json");
                 Map<String, Object> json = new HashMap<>();
@@ -393,8 +397,8 @@ class GitHubClient {
      */
     static URL parseURL(String s) {
         try {
-            return s == null ? null : new URL(s);
-        } catch (MalformedURLException e) {
+            return s == null ? null : URI.create(s).toURL();
+        } catch (IllegalArgumentException | MalformedURLException e) {
             throw new IllegalStateException("Invalid URL: " + s);
         }
     }

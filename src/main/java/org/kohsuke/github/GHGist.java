@@ -291,7 +291,7 @@ public class GHGist extends GHObject {
     String getApiTailUrl(String tail) {
         String result = "/gists/" + id;
         if (!StringUtils.isBlank(tail)) {
-            result += StringUtils.prependIfMissing(tail, "/");
+            result += tail.startsWith("/") ? tail : "/" + tail;
         }
         return result;
     }

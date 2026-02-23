@@ -49,6 +49,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.WeakHashMap;
@@ -1323,7 +1324,7 @@ public class GHRepository extends GHObject {
         if (owner1 != null && owner2 != null) {
             String ownerName1 = owner1.getOwnerName();
             String ownerName2 = owner2.getOwnerName();
-            if (!StringUtils.equals(ownerName1, ownerName2)) {
+            if (!Objects.equals(ownerName1, ownerName2)) {
                 String qualifiedName1 = String.format("%s:%s", ownerName1, id1.getName());
                 String qualifiedName2 = String.format("%s:%s", ownerName2, id2.getName());
                 return getCompare(qualifiedName1, qualifiedName2);

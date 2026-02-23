@@ -756,7 +756,8 @@ public class GHPullRequest extends GHIssue implements Refreshable {
             // subsequently issues requests against the `/issues/` handler, causing a 404 when
             // asking for, say, a list of commits associated with a PR. Replace the `/issues/`
             // with `/pulls/` to avoid that.
-            return StringUtils.prependIfMissing(url.toString().replace(root().getApiUrl(), ""), "/")
+            String path = url.toString().replace(root().getApiUrl(), "");
+            return (path.startsWith("/") ? path : "/" + path)
                     .replace("/issues/", "/pulls/");
         }
         return "/repos/" + owner.getOwnerName() + "/" + owner.getName() + "/pulls/" + number;
