@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 
 /**
  * Utility class for helping with operations for enterprise managed resources.
+ * <p>
+ * Compatible with Java 25.
  *
  * @author Miguel Esteban Gutiérrez
  */

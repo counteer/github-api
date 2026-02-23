@@ -620,6 +620,61 @@ public final class ReadOnlyObjects {
     }
 
     /**
+     * This version uses a record for immutable data objects.
+     * <p>
+     * Pro:
+     * <ul>
+     * <li>Minimal code</li>
+     * <li>Immutable by default</li>
+     * <li>Unmodifiable lists</li>
+     * </ul>
+     * Con:
+     * <ul>
+     * <li>Requires Java 16 or later</li>
+     * </ul>
+     *
+     * @author Liam Newman
+     * @see org.kohsuke.github.GHMeta
+     */
+    public static record GHMetaGettersFinalRecord(
+            List<String> api,
+            List<String> git,
+            List<String> hooks,
+            List<String> importer,
+            List<String> pages,
+            List<String> web,
+            boolean verifiablePasswordAuthentication) implements GHMetaExample {
+        @Override
+        public List<String> getApi() {
+            return Collections.unmodifiableList(api);
+        }
+        @Override
+        public List<String> getGit() {
+            return Collections.unmodifiableList(git);
+        }
+        @Override
+        public List<String> getHooks() {
+            return Collections.unmodifiableList(hooks);
+        }
+        @Override
+        public List<String> getImporter() {
+            return Collections.unmodifiableList(importer);
+        }
+        @Override
+        public List<String> getPages() {
+            return Collections.unmodifiableList(pages);
+        }
+        @Override
+        public List<String> getWeb() {
+            return Collections.unmodifiableList(web);
+        }
+        @Override
+        public boolean isVerifiablePasswordAuthentication() {
+            return verifiablePasswordAuthentication;
+        }
+    }
+
+    /**
      * Placeholder constructor.
      */
     public ReadOnlyObjects() {

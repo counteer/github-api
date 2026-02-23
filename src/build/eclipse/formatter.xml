@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<profiles version="17">
-    <profile kind="CodeFormatterProfile" name="Java Conventions - GitHub-api" version="17">
+<profiles version="25">
+    <profile kind="CodeFormatterProfile" name="Java Conventions - GitHub-api" version="25">
         <!-- Make various elements turn to colums when they wrap -->
         <!-- Basically the only way to create this is by downloading eclipse and working in their UI -->
         <setting id="org.eclipse.jdt.core.formatter.alignment_for_enum_constants" value="80"/>

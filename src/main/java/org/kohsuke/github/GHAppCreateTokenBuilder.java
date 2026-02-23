@@ -8,8 +8,9 @@ import java.util.Map;
 // TODO: Auto-generated Javadoc
 /**
  * Creates a access token for a GitHub App Installation.
+ * <p>
+ * Compatible with Java 25.
  *
- * @author Paulo Miguel Almeida
  * @see GHAppInstallation#createToken() GHAppInstallation#createToken()
  */
 public class GHAppCreateTokenBuilder extends GitHubInteractiveObject {

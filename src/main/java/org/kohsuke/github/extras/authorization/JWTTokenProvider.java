@@ -45,13 +45,12 @@ public class JWTTokenProvider implements AuthorizationProvider {
 
         // Remove all comments and whitespace from PEM
         // such as "-----BEGIN PRIVATE KEY-----" and newlines
-        String privateKeyContent = key.replaceAll("(?m)^--.*", "").replaceAll("\\s", "");
-
-        KeyFactory kf = KeyFactory.getInstance("RSA");
+        var privateKeyContent = key.replaceAll("(?m)^--.*", "").replaceAll("\\s", "");
+        var kf = KeyFactory.getInstance("RSA");
 
         try {
-            byte[] decode = Base64.getDecoder().decode(privateKeyContent);
-            PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(decode);
+            var decode = Base64.getDecoder().decode(privateKeyContent);
+            var keySpecPKCS8 = new PKCS8EncodedKeySpec(decode);
 
             return kf.generatePrivate(keySpecPKCS8);
         } catch (IllegalArgumentException e) {

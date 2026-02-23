@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 // TODO: Auto-generated Javadoc
 /**
  * A Github App Installation.
+ * <p>
+ * Compatible with Java 25.
  *
  * @author Paulo Miguel Almeida
  * @see GHApp#listInstallations() GHApp#listInstallations()

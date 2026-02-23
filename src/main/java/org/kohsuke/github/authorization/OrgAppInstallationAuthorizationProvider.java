@@ -3,10 +3,11 @@ package org.kohsuke.github.authorization;
 import org.kohsuke.github.BetaApi;
 
 /**
- * An AuthorizationProvider that performs automatic token refresh for an organization's AppInstallation.
+ * A sealed AuthorizationProvider that performs automatic token refresh for an organization's AppInstallation.
  */
 @Deprecated
-public class OrgAppInstallationAuthorizationProvider extends AppInstallationAuthorizationProvider {
+public sealed class OrgAppInstallationAuthorizationProvider extends AppInstallationAuthorizationProvider
+        permits AppInstallationAuthorizationProvider {
 
     /**
      * Provides an AuthorizationProvider that performs automatic token refresh, based on an previously authenticated

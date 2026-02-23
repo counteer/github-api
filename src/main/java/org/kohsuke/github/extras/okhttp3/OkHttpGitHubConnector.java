@@ -119,15 +119,14 @@ public class OkHttpGitHubConnector implements GitHubConnector {
         if (request.hasBody()) {
             body = RequestBody.create(IOUtils.toByteArray(request.body()));
         }
-        builder.method(request.method(), body);
-        Request okhttpRequest = builder.build();
-        Response okhttpResponse = client.newCall(okhttpRequest).execute();
+        var okhttpRequest = builder.method(request.method(), body).build();
+        var okhttpResponse = client.newCall(okhttpRequest).execute();
 
         return new OkHttpGitHubConnectorResponse(request, okhttpResponse);
     }
 
     /** Returns connection spec with TLS v1.2 in it */
     private List<ConnectionSpec> TlsConnectionSpecs() {
-        return Arrays.asList(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT);
+        return List.of(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT);
     }
 }

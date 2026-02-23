@@ -9,7 +9,9 @@ import javax.annotation.Nonnull;
 
 /**
  * An abstract data object builder/updater.
- *
+ * <p>
+ * Compatible with Java 25.
+ * <p>
  * This class can be use to make a Builder that supports both batch and single property changes.
  * <p>
  * Batching looks like this:

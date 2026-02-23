@@ -1,6 +1,6 @@
 package org.kohsuke.github.authorization;
 
-import javax.annotation.CheckForNull;
+import java.util.Optional;
 
 /**
  * An {@link AuthorizationProvider} that always returns the same credentials.
@@ -8,30 +8,23 @@ import javax.annotation.CheckForNull;
 public class ImmutableAuthorizationProvider implements AuthorizationProvider {
 
     /**
-     * An internal class representing all user-related credentials, which are credentials that have a login or should
+     * An internal record representing all user-related credentials, which are credentials that have a login or should
      * query the user endpoint for the login matching this credential.
      *
      * @see org.kohsuke.github.authorization.UserAuthorizationProvider UserAuthorizationProvider
      */
-    private static class UserProvider extends ImmutableAuthorizationProvider implements UserAuthorizationProvider {
+    private static record UserProvider(String authorization, Optional<String> login)
+            implements UserAuthorizationProvider {
 
-        private final String login;
-
-        UserProvider(String authorization) {
-            this(authorization, null);
-        }
-
-        UserProvider(String authorization, String login) {
-            super(authorization);
-            this.login = login;
-        }
-
-        @CheckForNull
         @Override
-        public String getLogin() {
+        public String getEncodedAuthorization() {
+            return authorization;
+        }
+
+        @Override
+        public Optional<String> getLogin() {
             return login;
         }
-
     }
 
     /**
@@ -65,7 +58,7 @@ public class ImmutableAuthorizationProvider implements AuthorizationProvider {
      *         oauthAccessToken
      */
     public static AuthorizationProvider fromOauthToken(String oauthAccessToken) {
-        return new UserProvider(String.format("token %s", oauthAccessToken));
+        return new UserProvider(String.format("token %s", oauthAccessToken), Optional.empty());
     }
 
     /**
@@ -80,7 +73,7 @@ public class ImmutableAuthorizationProvider implements AuthorizationProvider {
      *         oauthAccessToken
      */
     public static AuthorizationProvider fromOauthToken(String oauthAccessToken, String login) {
-        return new UserProvider(String.format("token %s", oauthAccessToken), login);
+        return new UserProvider(String.format("token %s", oauthAccessToken), Optional.ofNullable(login));
     }
 
     private final String authorization;

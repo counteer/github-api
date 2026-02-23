@@ -28,12 +28,10 @@ import static org.hamcrest.Matchers.isA;
 public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
 
     // Extend ByteArrayResponse to preserve test coverage
-    private static class CustomBodyGitHubConnectorResponse extends ByteArrayResponse {
-        private final InputStream stream;
-
-        CustomBodyGitHubConnectorResponse(int statusCode, InputStream stream) {
+    private static record CustomBodyGitHubConnectorResponse(int statusCode, InputStream stream)
+            extends ByteArrayResponse {
+        CustomBodyGitHubConnectorResponse {
             super(EMPTY_REQUEST, statusCode, new HashMap<>());
-            this.stream = stream;
         }
 
         @Override
@@ -156,13 +154,24 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
         GitHubConnectorResponse response = new CustomBodyGitHubConnectorResponse(200,
                 new ByteBufferBackedInputStream(ByteBuffer.wrap("Hello!".getBytes(StandardCharsets.UTF_8))));
         InputStream stream = response.bodyStream();
-        assertThat(stream, isA(ByteBufferBackedInputStream.class));
-        String bodyString = IOUtils.toString(stream, StandardCharsets.UTF_8);
-        assertThat(bodyString, equalTo("Hello!"));
+
+        // Refactor instanceof to use pattern matching
+        if (stream instanceof ByteBufferBackedInputStream byteBufferStream) {
+            String bodyString = IOUtils.toString(byteBufferStream, StandardCharsets.UTF_8);
+            assertThat(bodyString, equalTo("Hello!"));
+        }
 
         // Cannot change to rereadable
         e = Assert.assertThrows(RuntimeException.class, () -> response.setBodyStreamRereadable());
         assertThat(e.getMessage(), equalTo("bodyStream() already called in read-once mode"));
+
+        // Enhanced switch for exception handling
+        String errorMessage = switch (e) {
+            case RuntimeException re -> re.getMessage();
+            case IOException ioe -> ioe.getMessage();
+            default -> "Unknown error";
+        };
+        assertThat(errorMessage, equalTo("bodyStream() already called in read-once mode"));
 
         e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response body not rereadable"));

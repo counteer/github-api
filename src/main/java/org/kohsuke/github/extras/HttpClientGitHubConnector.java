@@ -100,16 +100,14 @@ public class HttpClientGitHubConnector implements GitHubConnector {
             }
         }
 
-        HttpRequest.BodyPublisher publisher = HttpRequest.BodyPublishers.noBody();
+        var publisher = HttpRequest.BodyPublishers.noBody();
         if (connectorRequest.hasBody()) {
             publisher = HttpRequest.BodyPublishers.ofByteArray(IOUtils.toByteArray(connectorRequest.body()));
         }
-        builder.method(connectorRequest.method(), publisher);
-
-        HttpRequest request = builder.build();
+        var request = builder.method(connectorRequest.method(), publisher).build();
 
         try {
-            HttpResponse<InputStream> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+            var httpResponse = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
             return new HttpClientGitHubConnectorResponse(connectorRequest, httpResponse);
         } catch (InterruptedException e) {
             throw (InterruptedIOException) new InterruptedIOException(e.getMessage()).initCause(e);

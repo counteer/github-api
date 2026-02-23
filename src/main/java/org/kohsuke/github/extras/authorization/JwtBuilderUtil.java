@@ -51,7 +51,7 @@ final class JwtBuilderUtil {
             // Trying to call a method that uses it causes "NoClassDefFoundError" if v0.11.x is being used.
             SignatureAlgorithm rs256 = Jwts.SIG.RS256;
 
-            JwtBuilder jwtBuilder = Jwts.builder();
+            var jwtBuilder = Jwts.builder();
             // jjwt uses the legacy java date-time api
             // see https://github.com/jwtk/jjwt/issues/235 for future support for java 8 date-time api
             jwtBuilder = jwtBuilder.issuedAt(Date.from(issuedAt))

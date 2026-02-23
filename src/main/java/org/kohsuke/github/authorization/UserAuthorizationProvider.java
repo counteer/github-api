@@ -1,6 +1,6 @@
 package org.kohsuke.github.authorization;
 
-import javax.annotation.CheckForNull;
+import java.util.Optional;
 
 /**
  * Interface for all user-related authorization providers.
@@ -14,9 +14,9 @@ public interface UserAuthorizationProvider extends AuthorizationProvider {
     /**
      * Gets the user login name.
      *
-     * @return the user login for this provider, or {@code null} if the login value should be queried from the "/user"
-     *         endpoint.
+     * @return the user login for this provider, or {@code Optional.empty()} if the login value should be queried from
+     *         the "/user" endpoint.
      */
-    @CheckForNull
-    String getLogin();
+    @Override
+    Optional<String> getLogin();
 }

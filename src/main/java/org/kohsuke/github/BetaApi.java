@@ -8,6 +8,8 @@ import java.lang.annotation.RetentionPolicy;
  * Indicates that the method/class/etc marked is a beta implementation of an SDK feature.
  * <p>
  * These APIs are subject to change and not a part of the backward compatibility commitment.
+ * <p>
+ * Compatible with Java 25.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

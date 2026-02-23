@@ -10,13 +10,15 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
 /**
- * An AuthorizationProvider that performs automatic token refresh for an organization's AppInstallation.
+ * A sealed AuthorizationProvider that performs automatic token refresh for an organization's AppInstallation.
  */
-public class AppInstallationAuthorizationProvider extends GitHub.DependentAuthorizationProvider {
+public sealed class AppInstallationAuthorizationProvider extends GitHub.DependentAuthorizationProvider
+        permits OrgAppInstallationAuthorizationProvider {
 
     /**
      * Provides an interface that returns an app to be used by an AppInstallationAuthorizationProvider

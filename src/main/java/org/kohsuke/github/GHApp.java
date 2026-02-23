@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 // TODO: Auto-generated Javadoc
 /**
  * A Github App.
+ * <p>
+ * Compatible with Java 25.
  *
  * @author Paulo Miguel Almeida
  * @see GitHub#getApp() GitHub#getApp()

@@ -32,17 +32,12 @@ public final class DefaultGitHubConnector {
     }
 
     static GitHubConnector create(String defaultConnectorProperty) {
-
-        if (defaultConnectorProperty.equalsIgnoreCase("okhttp")) {
-            return new OkHttpGitHubConnector(new OkHttpClient.Builder().build());
-        } else if (defaultConnectorProperty.equalsIgnoreCase("httpclient")) {
-            return new HttpClientGitHubConnector();
-        } else if (defaultConnectorProperty.equalsIgnoreCase("default")) {
-            return new HttpClientGitHubConnector();
-        } else {
-            throw new IllegalStateException(
+        return switch (defaultConnectorProperty.toLowerCase()) {
+            case "okhttp" -> new OkHttpGitHubConnector(new OkHttpClient.Builder().build());
+            case "httpclient", "default" -> new HttpClientGitHubConnector();
+            default -> throw new IllegalStateException(
                     "Property 'test.github.connector' must reference a valid built-in connector - okhttp, httpclient, or default.");
-        }
+        };
     }
 
     private DefaultGitHubConnector() {
