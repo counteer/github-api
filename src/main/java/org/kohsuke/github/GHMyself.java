@@ -234,7 +234,7 @@ public class GHMyself extends GHUser {
      */
     @Override
     public PagedIterable<GHRepository> listRepositories() {
-        return listRepositories(30);
+        return listRepositories(30, RepositoryListFilter.ALL);
     }
 
     /**
@@ -251,6 +251,7 @@ public class GHMyself extends GHUser {
      *            Unlike {@link #getRepositories()}, this does not wait until all the repositories are returned.
      * @return the paged iterable
      */
+    @SuppressWarnings("deprecation")
     public PagedIterable<GHRepository> listRepositories(final int pageSize) {
         return listRepositories(pageSize, RepositoryListFilter.ALL);
     }

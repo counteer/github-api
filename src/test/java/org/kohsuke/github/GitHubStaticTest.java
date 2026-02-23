@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.kohsuke.github.connector.GitHubConnectorResponse;
 
+import java.net.URI;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
@@ -360,7 +361,8 @@ public class GitHubStaticTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void testParseURL() throws Exception {
-        assertThat(GitHubClient.parseURL("https://api.github.com"), equalTo(new URL("https://api.github.com")));
+        assertThat(GitHubClient.parseURL("https://api.github.com"),
+                equalTo(URI.create("https://api.github.com").toURL()));
         assertThat(GitHubClient.parseURL(null), nullValue());
 
         try {

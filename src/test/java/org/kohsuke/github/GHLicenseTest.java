@@ -28,7 +28,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 
 import static org.hamcrest.Matchers.*;
 
@@ -63,10 +63,10 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         assertThat("The name is correct", license.getName(), equalTo("MIT License"));
         assertThat("The URL is correct",
                 license.getUrl(),
-                equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit")));
+                equalTo(URI.create(mockGitHub.apiServer().baseUrl() + "/licenses/mit").toURL()));
         assertThat("The HTML URL is correct",
                 license.getHtmlUrl(),
-                equalTo(new URL("http://choosealicense.com/licenses/mit/")));
+                equalTo(URI.create("http://choosealicense.com/licenses/mit/").toURL()));
     }
 
     /**
@@ -86,7 +86,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         assertThat("The name is correct", license.getName(), equalTo("MIT License"));
         assertThat("The URL is correct",
                 license.getUrl(),
-                equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit")));
+                equalTo(URI.create(mockGitHub.apiServer().baseUrl() + "/licenses/mit").toURL()));
     }
 
     /**
@@ -105,7 +105,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         assertThat("The name is correct", license.getName(), equalTo("MIT License"));
         assertThat("The URL is correct",
                 license.getUrl(),
-                equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit")));
+                equalTo(URI.create(mockGitHub.apiServer().baseUrl() + "/licenses/mit").toURL()));
     }
 
     /**
@@ -165,7 +165,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         assertThat("The name is correct", license.getName(), equalTo("Apache License 2.0"));
         assertThat("The URL is correct",
                 license.getUrl(),
-                equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/apache-2.0")));
+                equalTo(URI.create(mockGitHub.apiServer().baseUrl() + "/licenses/apache-2.0").toURL()));
     }
 
     /**
@@ -198,7 +198,7 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         assertThat("The SPDX ID is correct", license.getSpdxId(), is(equalTo("MIT")));
         assertThat("The HTML URL is correct",
                 license.getHtmlUrl(),
-                equalTo(new URL("http://choosealicense.com/licenses/mit/")));
+                equalTo(URI.create("http://choosealicense.com/licenses/mit/").toURL()));
         assertThat(license.getBody(), startsWith("MIT License\n" + "\n" + "Copyright (c) [year] [fullname]\n\n"));
         assertThat(license.getForbidden(), is(empty()));
         assertThat(license.getPermitted(), is(empty()));
@@ -231,7 +231,8 @@ public class GHLicenseTest extends AbstractGitHubWireMockTest {
         PagedIterable<GHLicense> licenses = gitHub.listLicenses();
         for (GHLicense lic : licenses) {
             if (lic.getKey().equals("mit")) {
-                assertThat(lic.getUrl(), equalTo(new URL(mockGitHub.apiServer().baseUrl() + "/licenses/mit")));
+                assertThat(lic.getUrl(),
+                        equalTo(URI.create(mockGitHub.apiServer().baseUrl() + "/licenses/mit").toURL()));
                 return;
             }
         }

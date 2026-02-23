@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -1951,7 +1952,7 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
                     List<URL> r = new ArrayList<>();
                     for (GHHook h : repo.getHooks()) {
                         if (h.getName().equals("web")) {
-                            r.add(new URL(h.getConfig().get("url")));
+                            r.add(URI.create(h.getConfig().get("url")).toURL());
                         }
                     }
                     return r;

@@ -14,6 +14,7 @@ import org.kohsuke.github.GHOrganization.Permission;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -1709,7 +1710,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
         final GHOrganization o = gitHub.getOrganization(GITHUB_API_TEST_ORG);
         final GHRepository r = o.getRepository("github-api");
         try {
-            GHHook hook = r.createWebHook(new URL("http://www.google.com/"));
+            GHHook hook = r.createWebHook(URI.create("http://www.google.com/").toURL());
             assertThat(hook.getName(), equalTo("web"));
             assertThat(hook.getEvents().size(), equalTo(1));
             assertThat(hook.getEvents(), contains(GHEvent.PUSH));
@@ -1731,10 +1732,10 @@ public class AppTest extends AbstractGitHubWireMockTest {
                     containsString("repos/hub4j-test-org/github-api/hooks/" + finalRepoHook.getId()));
             assertThat(e.getMessage(), containsString("rest/reference/repos#get-a-repository-webhook"));
 
-            hook = r.createWebHook(new URL("http://www.google.com/"));
+            hook = r.createWebHook(URI.create("http://www.google.com/").toURL());
             r.deleteHook((int) hook.getId());
 
-            hook = o.createWebHook(new URL("http://www.google.com/"));
+            hook = o.createWebHook(URI.create("http://www.google.com/").toURL());
             assertThat(hook.getName(), equalTo("web"));
             assertThat(hook.getEvents().size(), equalTo(1));
             assertThat(hook.getEvents(), contains(GHEvent.PUSH));
@@ -1756,7 +1757,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
             assertThat(e2.getMessage(), containsString("orgs/hub4j-test-org/hooks/" + finalOrgHook.getId()));
             assertThat(e2.getMessage(), containsString("rest/reference/orgs#get-an-organization-webhook"));
 
-            hook = o.createWebHook(new URL("http://www.google.com/"));
+            hook = o.createWebHook(URI.create("http://www.google.com/").toURL());
             o.deleteHook((int) hook.getId());
 
             // System.out.println(hook);
