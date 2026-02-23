@@ -4,10 +4,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHCommit.File;
 import org.kohsuke.github.GHOrganization.Permission;
 
@@ -46,7 +46,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void blob() throws Exception {
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
 
         GHRepository r = gitHub.getRepository("hub4j/github-api");
         String sha1 = "a12243f2fc5b8c2ba47dd677d0b0c7583539584d";
@@ -65,7 +65,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void checkToString() throws Exception {
         // Just basic code coverage to make sure toString() doesn't blow up
@@ -274,7 +274,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
     /**
      * Test app.
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testApp() {
         // System.out.println(gitHub.getMyself().getEmails());
@@ -324,7 +324,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testBranches() throws Exception {
         Map<String, GHBranch> b = gitHub.getUser("jenkinsci").getRepository("jenkins").getBranches();
@@ -482,7 +482,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testCommitStatusContext() throws IOException {
         GHRepository myRepository = getTestRepository();
@@ -694,7 +694,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testFetchPullRequest() throws Exception {
         GHRepository r = gitHub.getOrganization("jenkinsci").getRepository("jenkins");
@@ -709,7 +709,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testFetchPullRequestAsList() throws Exception {
         GHRepository r = gitHub.getRepository("hub4j/github-api");
@@ -989,7 +989,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testMemberPagenation() throws IOException {
         Set<GHUser> all = new HashSet<GHUser>();
@@ -1155,7 +1155,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testPublicKeys() throws Exception {
         List<GHKey> keys = gitHub.getMyself().getPublicKeys();
@@ -1168,7 +1168,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testPullRequestPopulate() throws Exception {
         GHRepository r = gitHub.getUser("kohsuke").getRepository("github-api");
@@ -1504,7 +1504,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testRepoPermissions() throws Exception {
         kohsuke();
@@ -1592,7 +1592,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Ignore("Needs mocking check")
+    @Disabled("Needs mocking check")
     @Test
     public void testTrees() throws IOException {
         GHTree mainTree = gitHub.getRepository("hub4j/github-api").getTree("main");
@@ -1726,7 +1726,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
             hook2.ping();
             hook2.delete();
             final GHHook finalRepoHook = hook;
-            GHFileNotFoundException e = Assert.assertThrows(GHFileNotFoundException.class,
+            GHFileNotFoundException e = Assertions.assertThrows(GHFileNotFoundException.class,
                     () -> r.getHook((int) finalRepoHook.getId()));
             assertThat(e.getMessage(),
                     containsString("repos/hub4j-test-org/github-api/hooks/" + finalRepoHook.getId()));
@@ -1752,7 +1752,7 @@ public class AppTest extends AbstractGitHubWireMockTest {
             hook2.delete();
 
             final GHHook finalOrgHook = hook;
-            GHFileNotFoundException e2 = Assert.assertThrows(GHFileNotFoundException.class,
+            GHFileNotFoundException e2 = Assertions.assertThrows(GHFileNotFoundException.class,
                     () -> o.getHook((int) finalOrgHook.getId()));
             assertThat(e2.getMessage(), containsString("orgs/hub4j-test-org/hooks/" + finalOrgHook.getId()));
             assertThat(e2.getMessage(), containsString("rest/reference/orgs#get-an-organization-webhook"));

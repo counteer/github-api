@@ -1,7 +1,9 @@
 package org.kohsuke.github;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.kohsuke.github.GHCheckRun.Conclusion;
 import org.kohsuke.github.GHCheckRun.Status;
 import org.kohsuke.github.GHProjectsV2Item.ContentType;
@@ -24,7 +26,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -33,8 +35,22 @@ import static org.junit.Assert.assertThrows;
 public class GHEventPayloadTest extends AbstractGitHubWireMockTest {
 
     /** The payload. */
-    @Rule
     public final PayloadRule payload = new PayloadRule(".json");
+
+        @BeforeEach
+        public void configurePayloadRule(TestInfo testInfo) {
+                String payloadValue = testInfo.getTestMethod()
+                                .map(method -> method.getAnnotation(Payload.class))
+                                .map(Payload::value)
+                                .orElse(null);
+                payload.setContext(this.getClass(), testInfo.getTestMethod().map(method -> method.getName()).orElse("unknown"),
+                                payloadValue);
+        }
+
+        @AfterEach
+        public void clearPayloadRuleContext() {
+                payload.clearContext();
+        }
 
     /**
      * Instantiates a new GH event payload test.

@@ -40,6 +40,16 @@ public class PayloadRule implements TestRule {
         this.type = type;
     }
 
+    public void clearContext() {
+        this.resourceName = null;
+        this.testClass = null;
+    }
+
+    public void setContext(Class<?> testClass, String methodName, String payloadValue) {
+        this.testClass = testClass;
+        this.resourceName = payloadValue == null ? methodName : payloadValue;
+    }
+
     /**
      * Apply.
      *

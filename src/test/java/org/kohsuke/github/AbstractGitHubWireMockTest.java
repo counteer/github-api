@@ -7,10 +7,10 @@ import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import wiremock.com.github.jknack.handlebars.Helper;
 import wiremock.com.github.jknack.handlebars.Options;
 
@@ -19,8 +19,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -122,7 +122,7 @@ public abstract class AbstractGitHubWireMockTest {
      * Fail.
      */
     public static void fail() {
-        Assert.fail();
+        Assertions.fail();
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class AbstractGitHubWireMockTest {
      *            the reason
      */
     public static void fail(String reason) {
-        Assert.fail(reason);
+        Assertions.fail(reason);
     }
 
     private static GitHubBuilder createGitHubBuilder() {
@@ -181,7 +181,6 @@ public abstract class AbstractGitHubWireMockTest {
     }
 
     /** The mock git hub. */
-    @Rule
     public final GitHubWireMockRule mockGitHub;
 
     private final GitHubBuilder githubBuilder = createGitHubBuilder();
@@ -221,13 +220,20 @@ public abstract class AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Before
-    @After
     public void cleanupTempRepositories() throws IOException {
         if (mockGitHub.isUseProxy()) {
             for (String fullName : tempGitHubRepositories) {
                 cleanupRepository(fullName);
             }
+        }
+    }
+
+    @AfterEach
+    public void wireMockTeardown() throws IOException {
+        try {
+            cleanupTempRepositories();
+        } finally {
+            mockGitHub.afterTest();
         }
     }
 
@@ -248,8 +254,10 @@ public abstract class AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
-    public void wireMockSetup() throws Exception {
+    @BeforeEach
+    public void wireMockSetup(TestInfo testInfo) throws Exception {
+        mockGitHub.beforeTest(testInfo.getTestMethod().map(method -> method.getName()).orElse("unknown"));
+
         GitHubBuilder builder = getGitHubBuilder().withEndpoint(mockGitHub.apiServer().baseUrl());
 
         if (useDefaultGitHub) {
@@ -401,16 +409,16 @@ public abstract class AbstractGitHubWireMockTest {
      *            the reason
      */
     protected void requireProxy(String reason) {
-        assumeTrue("Test only valid when proxying (-Dtest.github.useProxy to enable): " + reason,
-                mockGitHub.isUseProxy());
+        assumeTrue(mockGitHub.isUseProxy(),
+                "Test only valid when proxying (-Dtest.github.useProxy to enable): " + reason);
     }
 
     /**
      * Snapshot not allowed.
      */
     protected void snapshotNotAllowed() {
-        assumeFalse("Test contains hand written mappings. Only valid when not taking a snapshot.",
-                mockGitHub.isTakeSnapshot());
+        assumeFalse(mockGitHub.isTakeSnapshot(),
+                "Test contains hand written mappings. Only valid when not taking a snapshot.");
     }
 
     /**

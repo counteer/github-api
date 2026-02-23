@@ -1,12 +1,12 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHReleaseBuilder.MakeLatest;
 
 import java.util.Date;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -38,9 +38,8 @@ public class GHReleaseTest extends AbstractGitHubWireMockTest {
             GHRelease releaseCheck = repo.getRelease(release.getId());
             assertThat(releaseCheck, notNullValue());
 
-            HttpException httpException = assertThrows(HttpException.class, () -> {
-                repo.createRelease(tagName).create();
-            });
+            HttpException httpException = assertThrows(HttpException.class, () ->
+                repo.createRelease(tagName).create());
 
             assertThat(httpException.getResponseCode(), is(422));
         } finally {
@@ -87,13 +86,12 @@ public class GHReleaseTest extends AbstractGitHubWireMockTest {
         String tagName = mockGitHub.getMethodName();
         String releaseName = "release-" + tagName;
 
-        assertThrows(GHFileNotFoundException.class, () -> {
+        assertThrows(GHFileNotFoundException.class, () ->
             repo.createRelease(tagName)
                     .name(releaseName)
                     .categoryName("an invalid cateogry")
                     .prerelease(false)
-                    .create();
-        });
+                    .create());
     }
 
     /**

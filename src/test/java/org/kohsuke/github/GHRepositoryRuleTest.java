@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHRepositoryRule.AlertsThreshold;
 import org.kohsuke.github.GHRepositoryRule.CodeScanningTool;
 import org.kohsuke.github.GHRepositoryRule.Operator;

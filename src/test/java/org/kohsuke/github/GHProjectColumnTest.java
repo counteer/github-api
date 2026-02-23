@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class GHProjectColumnTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @After
+    @AfterEach
     public void after() throws IOException {
         if (mockGitHub.isUseProxy()) {
             if (column != null) {
@@ -63,7 +63,7 @@ public class GHProjectColumnTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         project = gitHub.getOrganization(GITHUB_API_TEST_ORG).createProject("test-project", "This is a test project");
         column = project.createColumn("column-one");

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.google.common.collect.Sets;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHCheckRun.Conclusion;
 import org.kohsuke.github.GHOrganization.RepositoryRole;
 import org.kohsuke.github.GHRepository.Visibility;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.kohsuke.github.GHVerification.Reason.GPGVERIFY_ERROR;
 import static org.kohsuke.github.GHVerification.Reason.UNKNOWN_SIGNATURE_TYPE;
 
@@ -1363,11 +1363,14 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Test(expected = HttpException.class)
+    @Test
     public void syncNoFork() throws IOException {
-        GHRepository r = getRepository();
-        GHBranchSync sync = r.sync("main");
-        fail("Should have thrown an exception");
+        assertThrows(HttpException.class, () -> {
+            GHRepository r = getRepository();
+            GHBranchSync sync = r.sync("main");
+            fail("Should have thrown an exception");
+
+        });
 
     }
 
@@ -1448,7 +1451,7 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
         GHRepository repository = getRepository();
         GHRepositoryVariable variable = repository.getVariable("mynewvariable");
         variable.delete();
-        Assert.assertThrows(GHFileNotFoundException.class, () -> repository.getVariable("mynewvariable"));
+        Assertions.assertThrows(GHFileNotFoundException.class, () -> repository.getVariable("mynewvariable"));
     }
 
     /**
@@ -1801,9 +1804,7 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void testTarball() throws IOException {
-        getTempRepository().readTar((InputStream inputstream) -> {
-            return new ByteArrayInputStream(IOUtils.toByteArray(inputstream));
-        }, null);
+        getTempRepository().readTar((InputStream inputstream) -> new ByteArrayInputStream(IOUtils.toByteArray(inputstream)), null);
     }
 
     /**
@@ -1885,9 +1886,7 @@ public class GHRepositoryTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void testZipball() throws IOException {
-        getTempRepository().readZip((InputStream inputstream) -> {
-            return new ByteArrayInputStream(IOUtils.toByteArray(inputstream));
-        }, null);
+        getTempRepository().readZip((InputStream inputstream) -> new ByteArrayInputStream(IOUtils.toByteArray(inputstream)), null);
     }
 
     /**

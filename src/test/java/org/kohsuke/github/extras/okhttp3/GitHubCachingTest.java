@@ -5,9 +5,9 @@ import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.AbstractGitHubWireMockTest;
 import org.kohsuke.github.GHFileNotFoundException;
 import org.kohsuke.github.GHIssueState;
@@ -49,7 +49,7 @@ public class GitHubCachingTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setupRepo() throws Exception {
         if (mockGitHub.isUseProxy()) {
             for (GHPullRequest pr : getRepository(this.getNonRecordingGitHub()).queryPullRequests()
@@ -74,7 +74,7 @@ public class GitHubCachingTest extends AbstractGitHubWireMockTest {
      */
     @Test
     public void testCached404() throws Exception {
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
 
         // ISSUE #669
         snapshotNotAllowed();

@@ -2,6 +2,16 @@
 
 For changes after v1.101 see the [GitHub Releases page](https://github.com/hub4j/github-api/releases) for the project. 
 
+## Unreleased
+
+### Internals
+
+- Upgrade build baseline to Java 21 (compiler/javadoc settings and compatibility fixes in `pom.xml`).
+- Reduce Java 21 deprecations in core code and tests (URL construction and deprecated utility usages).
+- Migrate tests from JUnit 4 APIs to JUnit 5 annotations/assertions/assumptions across the test suite.
+- Update test infrastructure for JUnit 5 lifecycle execution (wiremock/payload rule handling adjustments).
+- Update test dependencies to support migrated JUnit 5 + Hamcrest usage.
+
 ## [github-api-1.101](https://github.com/hub4j/github-api/tree/github-api-1.101) (2019-11-27)
 
 [Full Changelog](https://github.com/hub4j/github-api/compare/github-api-1.100...github-api-1.101)

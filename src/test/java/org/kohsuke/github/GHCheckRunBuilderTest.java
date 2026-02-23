@@ -24,8 +24,8 @@
 
 package org.kohsuke.github;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHCheckRun.Status;
 
 import java.io.IOException;
@@ -240,7 +240,7 @@ public class GHCheckRunBuilderTest extends AbstractGHAppInstallationTest {
                                 GHCheckRun.AnnotationLevel.NOTICE,
                                 "hello to you too").withTitle("Look here")))
                 .create();
-        Assert.assertThrows(GHException.class,
+        Assertions.assertThrows(GHException.class,
                 () -> checkRun.update()
                         .withStatus(GHCheckRun.Status.COMPLETED)
                         .withConclusion(GHCheckRun.Conclusion.SUCCESS)

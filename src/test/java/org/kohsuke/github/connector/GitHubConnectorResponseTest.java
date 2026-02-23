@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.AbstractGitHubWireMockTest;
 import org.kohsuke.github.connector.GitHubConnectorResponse.ByteArrayResponse;
 
@@ -112,7 +112,7 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
         assertThat(bodyString, equalTo("Hello!"));
 
         response.close();
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response is closed"));
     }
 
@@ -140,7 +140,7 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
         response.setBodyStreamRereadable();
 
         response.close();
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response is closed"));
     }
 
@@ -161,13 +161,13 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
         assertThat(bodyString, equalTo("Hello!"));
 
         // Cannot change to rereadable
-        e = Assert.assertThrows(RuntimeException.class, () -> response.setBodyStreamRereadable());
+        e = Assertions.assertThrows(RuntimeException.class, () -> response.setBodyStreamRereadable());
         assertThat(e.getMessage(), equalTo("bodyStream() already called in read-once mode"));
 
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response body not rereadable"));
         response.close();
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response is closed"));
     }
 
@@ -181,18 +181,18 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
     public void testBodyStream_null() throws Exception {
         Exception e;
         GitHubConnectorResponse response = new CustomBodyGitHubConnectorResponse(200, null);
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response body missing, stream null"));
 
         // Cannot change to rereadable
-        e = Assert.assertThrows(RuntimeException.class, () -> response.setBodyStreamRereadable());
+        e = Assertions.assertThrows(RuntimeException.class, () -> response.setBodyStreamRereadable());
         assertThat(e.getMessage(), equalTo("bodyStream() already called in read-once mode"));
 
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response body not rereadable"));
 
         response.close();
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response is closed"));
     }
 
@@ -206,17 +206,17 @@ public class GitHubConnectorResponseTest extends AbstractGitHubWireMockTest {
     public void testBodyStream_null_buffered() throws Exception {
         Exception e;
         GitHubConnectorResponse response = new CustomBodyGitHubConnectorResponse(404, null);
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response body missing, stream null"));
         // Buffered response can be read multiple times
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response body missing, stream null"));
 
         // force should have no effect after first read attempt
         response.setBodyStreamRereadable();
 
         response.close();
-        e = Assert.assertThrows(IOException.class, () -> response.bodyStream());
+        e = Assertions.assertThrows(IOException.class, () -> response.bodyStream());
         assertThat(e.getMessage(), equalTo("Response is closed"));
     }
 

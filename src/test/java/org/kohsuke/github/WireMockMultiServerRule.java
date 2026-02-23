@@ -100,22 +100,33 @@ public class WireMockMultiServerRule implements MethodRule, TestRule {
         return methodName;
     }
 
+    public void beforeTest(String methodName) {
+        this.methodName = methodName;
+        initializeServers();
+        WireMock.configureFor("localhost", this.servers.get("default").port());
+        this.before();
+    }
+
+    public void afterTest() {
+        try {
+            this.checkForUnmatchedRequests();
+        } finally {
+            this.after();
+            this.stop();
+            this.methodName = null;
+            this.servers.clear();
+        }
+    }
+
     private Statement apply(final Statement base, final String methodName) {
         return new Statement() {
             public void evaluate() throws Throwable {
-                WireMockMultiServerRule.this.methodName = methodName;
-                initializeServers();
-                WireMock.configureFor("localhost", WireMockMultiServerRule.this.servers.get("default").port());
+                WireMockMultiServerRule.this.beforeTest(methodName);
 
                 try {
-                    WireMockMultiServerRule.this.before();
                     base.evaluate();
-                    WireMockMultiServerRule.this.checkForUnmatchedRequests();
                 } finally {
-                    WireMockMultiServerRule.this.after();
-                    WireMockMultiServerRule.this.stop();
-                    WireMockMultiServerRule.this.methodName = null;
-                    WireMockMultiServerRule.this.servers.clear();
+                    WireMockMultiServerRule.this.afterTest();
                 }
 
             }

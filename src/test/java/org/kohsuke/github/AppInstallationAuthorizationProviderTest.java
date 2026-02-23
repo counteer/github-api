@@ -1,6 +1,6 @@
 package org.kohsuke.github;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.authorization.AppInstallationAuthorizationProvider;
 import org.kohsuke.github.authorization.ImmutableAuthorizationProvider;
 import org.kohsuke.github.authorization.OrgAppInstallationAuthorizationProvider;
@@ -10,6 +10,7 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.startsWith;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: Auto-generated Javadoc
 
@@ -31,16 +32,18 @@ public class AppInstallationAuthorizationProviderTest extends AbstractGHAppInsta
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Test(expected = HttpException.class)
+    @Test
     public void invalidJWTTokenRaisesException() throws IOException {
-        OrgAppInstallationAuthorizationProvider provider = new OrgAppInstallationAuthorizationProvider(
-                "testOrganization",
-                ImmutableAuthorizationProvider.fromJwtToken("myToken"));
-        gitHub = getGitHubBuilder().withAuthorizationProvider(provider)
-                .withEndpoint(mockGitHub.apiServer().baseUrl())
-                .build();
+        assertThrows(HttpException.class, () -> {
+            OrgAppInstallationAuthorizationProvider provider = new OrgAppInstallationAuthorizationProvider(
+                    "testOrganization",
+                    ImmutableAuthorizationProvider.fromJwtToken("myToken"));
+            gitHub = getGitHubBuilder().withAuthorizationProvider(provider)
+                    .withEndpoint(mockGitHub.apiServer().baseUrl())
+                    .build();
 
-        provider.getEncodedAuthorization();
+            provider.getEncodedAuthorization();
+        });
     }
 
     /**

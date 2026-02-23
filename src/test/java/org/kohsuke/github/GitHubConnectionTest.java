@@ -1,8 +1,9 @@
 package org.kohsuke.github;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.junit.Assume;
-import org.junit.Test;
+import org.hamcrest.junit.MatcherAssume;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.authorization.AuthorizationProvider;
 import org.kohsuke.github.authorization.ImmutableAuthorizationProvider;
 import org.kohsuke.github.authorization.UserAuthorizationProvider;
@@ -37,7 +38,7 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
     @Test
     public void testAnonymous() {
         // we disable this test for JDK 16+ as the current hacks in setupEnvironment() don't work with JDK 16+
-        Assume.assumeThat(Double.valueOf(System.getProperty("java.specification.version")), lessThan(16.0));
+        MatcherAssume.assumeThat(Double.valueOf(System.getProperty("java.specification.version")), lessThan(16.0));
 
         Map<String, String> props = new HashMap<String, String>();
 
@@ -60,8 +61,8 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
     @Test
     public void testGitHubBuilderFromCredentialsWithEnvironment() throws IOException {
         // we disable this test for JDK 16+ as the current hacks in setupEnvironment() don't work with JDK 16+
-        Assume.assumeThat(Double.valueOf(System.getProperty("java.specification.version")), lessThan(16.0));
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+        MatcherAssume.assumeThat(Double.valueOf(System.getProperty("java.specification.version")), lessThan(16.0));
+        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
 
         Map<String, String> props = new HashMap<String, String>();
 
@@ -101,8 +102,8 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
     @Test
     public void testGitHubBuilderFromCredentialsWithPropertyFile() throws IOException {
         // we disable this test for JDK 16+ as the current hacks in setupEnvironment() don't work with JDK 16+
-        Assume.assumeThat(Double.valueOf(System.getProperty("java.specification.version")), lessThan(16.0));
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+        MatcherAssume.assumeThat(Double.valueOf(System.getProperty("java.specification.version")), lessThan(16.0));
+        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
 
         Map<String, String> props = new HashMap<String, String>();
 
@@ -166,7 +167,7 @@ public class GitHubConnectionTest extends AbstractGitHubWireMockTest {
     @Test
     public void testGitHubBuilderFromEnvironment() throws IOException {
         // we disable this test for JDK 16+ as the current hacks in setupEnvironment() don't work with JDK 16+
-        Assume.assumeThat(Double.valueOf(System.getProperty("java.specification.version")), lessThan(16.0));
+        MatcherAssume.assumeThat(Double.valueOf(System.getProperty("java.specification.version")), lessThan(16.0));
 
         Map<String, String> props = new HashMap<String, String>();
 

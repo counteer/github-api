@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
 import com.google.common.collect.Iterables;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.example.dataobject.ReadOnlyObjects;
 
 import java.io.IOException;
@@ -300,7 +300,7 @@ public class GitHubTest extends AbstractGitHubWireMockTest {
         assertThat(r4.getTotalCount(), equalTo(r2.getTotalCount()));
 
         // Verify qualifier not allowed to be empty
-        IllegalArgumentException e = Assert.assertThrows(IllegalArgumentException.class,
+        IllegalArgumentException e = Assertions.assertThrows(IllegalArgumentException.class,
                 () -> searchBuilder.q("", "not valid"));
         assertThat(e.getMessage(), equalTo("qualifier cannot be null or empty"));
     }

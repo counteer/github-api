@@ -1,7 +1,7 @@
 package org.kohsuke.github;
 
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHRepositoryTraffic.DailyInfo;
 
 import java.io.IOException;

@@ -1,9 +1,9 @@
 package org.kohsuke.github;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHOrganization.Permission;
 import org.kohsuke.github.GHOrganization.RepositoryRole;
 
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.kohsuke.github.ExternalGroupsTestingSupport.*;
 import static org.kohsuke.github.ExternalGroupsTestingSupport.Matchers.*;
 
@@ -44,8 +44,8 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @Before
-    @After
+    @BeforeEach
+    @AfterEach
     public void cleanUpTeam() throws IOException {
         // Cleanup is only needed when proxying
         if (!mockGitHub.isUseProxy()) {
@@ -131,9 +131,8 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
         cleanupRepository(GITHUB_API_TEST_ORG + '/' + GITHUB_API_TEST);
 
         GHOrganization org = gitHub.getOrganization(GITHUB_API_TEST_ORG);
-        assertThrows(NullPointerException.class, () -> {
-            org.createRepository(GITHUB_API_TEST).fromTemplateRepository(null).owner(GITHUB_API_TEST_ORG).create();
-        });
+        assertThrows(NullPointerException.class, () ->
+            org.createRepository(GITHUB_API_TEST).fromTemplateRepository(null).owner(GITHUB_API_TEST_ORG).create());
     }
 
     /**
@@ -149,12 +148,11 @@ public class GHOrganizationTest extends AbstractGitHubWireMockTest {
         GHOrganization org = gitHub.getOrganization(GITHUB_API_TEST_ORG);
         GHRepository templateRepository = org.getRepository(GITHUB_API_TEMPLATE_TEST);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () ->
             org.createRepository(GITHUB_API_TEST)
                     .fromTemplateRepository(templateRepository)
                     .owner(GITHUB_API_TEST_ORG)
-                    .create();
-        });
+                    .create());
     }
 
     /**

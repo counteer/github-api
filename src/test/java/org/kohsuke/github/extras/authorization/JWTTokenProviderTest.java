@@ -1,6 +1,6 @@
 package org.kohsuke.github.extras.authorization;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.*;
 
 import java.io.File;

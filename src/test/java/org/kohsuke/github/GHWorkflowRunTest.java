@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
 import org.awaitility.Awaitility;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHPullRequestQueryBuilder.Sort;
 import org.kohsuke.github.GHWorkflowJob.Step;
 import org.kohsuke.github.GHWorkflowRun.Conclusion;
@@ -209,7 +209,7 @@ public class GHWorkflowRunTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         repo = gitHub.getRepository(REPO_NAME);
     }

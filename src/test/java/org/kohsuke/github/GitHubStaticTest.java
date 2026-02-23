@@ -1,7 +1,7 @@
 package org.kohsuke.github;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.connector.GitHubConnectorResponse;
 
 import java.net.URI;
@@ -20,7 +20,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -285,17 +285,17 @@ public class GitHubStaticTest extends AbstractGitHubWireMockTest {
                 equalTo("ftp://api.test.github.com/endpoint"));
 
         GHException e;
-        e = Assert.assertThrows(GHException.class,
+        e = Assertions.assertThrows(GHException.class,
                 () -> GitHubRequest.getApiURL("gopher://whoa.github.com", "/endpoint"));
         assertThat(e.getMessage(), equalTo("Unable to build GitHub API URL"));
         assertThat(e.getCause(), instanceOf(MalformedURLException.class));
         assertThat(e.getCause().getMessage(), equalTo("unknown protocol: gopher"));
 
-        e = Assert.assertThrows(GHException.class, () -> GitHubRequest.getApiURL("bogus", "/endpoint"));
+        e = Assertions.assertThrows(GHException.class, () -> GitHubRequest.getApiURL("bogus", "/endpoint"));
         assertThat(e.getCause(), instanceOf(IllegalArgumentException.class));
         assertThat(e.getCause().getMessage(), equalTo("URI is not absolute"));
 
-        e = Assert.assertThrows(GHException.class,
+        e = Assertions.assertThrows(GHException.class,
                 () -> GitHubRequest.getApiURL(null, "gopher://api.test.github.com/endpoint"));
         assertThat(e.getCause(), instanceOf(MalformedURLException.class));
         assertThat(e.getCause().getMessage(), equalTo("unknown protocol: gopher"));

@@ -16,8 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.GHDiscussion.Creator;
 import org.kohsuke.github.GHPullRequestCommitDetail.Commit;
 import org.kohsuke.github.GHPullRequestCommitDetail.CommitPointer;
@@ -103,7 +103,7 @@ public class ArchTests {
     /**
      * Before class.
      */
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         assertThat(classFiles.size(), greaterThan(0));
     }

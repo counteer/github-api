@@ -1,7 +1,7 @@
 package org.kohsuke.github.extras.authorization;
 
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.AbstractGitHubWireMockTest;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHubRateLimitHandler;

@@ -5,9 +5,9 @@ import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.kohsuke.github.AbstractGitHubWireMockTest;
 import org.kohsuke.github.GHRateLimit;
 import org.kohsuke.github.GHRepository;
@@ -19,8 +19,8 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -173,8 +173,8 @@ public class OkHttpGitHubConnectorTest extends AbstractGitHubWireMockTest {
 
         // NOTE: This test is very timing sensitive.
         // It can be run locally to verify behavior but snapshot data is to touchy
-        assumeFalse("Test only valid when not taking a snapshot", mockGitHub.isTakeSnapshot());
-        assumeTrue("Test only valid when proxying (-Dtest.github.useProxy to enable)", mockGitHub.isUseProxy());
+        assumeFalse(mockGitHub.isTakeSnapshot(), "Test only valid when not taking a snapshot");
+        assumeTrue(mockGitHub.isUseProxy(), "Test only valid when proxying (-Dtest.github.useProxy to enable)");
 
         OkHttpClient client = createClient(true);
         OkHttpGitHubConnector connector = new OkHttpGitHubConnector(client, 3);
@@ -226,7 +226,7 @@ public class OkHttpGitHubConnectorTest extends AbstractGitHubWireMockTest {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    @After
+    @AfterEach
     public void deleteCache() throws IOException {
         if (cache != null) {
             cache.delete();
@@ -239,7 +239,7 @@ public class OkHttpGitHubConnectorTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setupRepo() throws Exception {
         if (mockGitHub.isUseProxy()) {
             GHRepository repo = getRepository(getNonRecordingGitHub());

@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class GHHookTest {
      * @throws Exception
      *             the exception
      */
-    @Ignore
+    @Disabled
     @Test
     public void exposeResponceHeaders() throws Exception {
         String user1Login = "KostyaSha-auto";

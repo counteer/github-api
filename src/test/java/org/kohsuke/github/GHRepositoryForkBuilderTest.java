@@ -1,8 +1,8 @@
 package org.kohsuke.github;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
@@ -73,7 +73,7 @@ public class GHRepositoryForkBuilderTest extends AbstractGitHubWireMockTest {
      * @throws Exception
      *             the exception
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         repo = getTempRepository();
 
@@ -97,7 +97,7 @@ public class GHRepositoryForkBuilderTest extends AbstractGitHubWireMockTest {
     /**
      * Tear down.
      */
-    @After
+    @AfterEach
     public void tearDown() {
         GHRepositoryForkBuilder.FORK_RETRY_INTERVAL = originalInterval;
     }
