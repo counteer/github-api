@@ -58,11 +58,7 @@ public class GHUser extends GHPerson {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GHUser) {
-            GHUser that = (GHUser) obj;
-            return this.login.equals(that.login);
-        }
-        return false;
+        return obj instanceof GHUser that && this.login.equals(that.login);
     }
 
     /**

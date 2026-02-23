@@ -84,10 +84,8 @@ public class GHLicense extends GHObject {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof GHLicense))
+        if (!(o instanceof GHLicense that))
             return false;
-
-        GHLicense that = (GHLicense) o;
         return Objects.equals(getUrl(), that.getUrl());
     }
 

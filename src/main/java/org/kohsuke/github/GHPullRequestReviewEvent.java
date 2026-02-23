@@ -53,16 +53,11 @@ public enum GHPullRequestReviewEvent {
      * @return the GH pull request review state
      */
     GHPullRequestReviewState toState() {
-        switch (this) {
-            case PENDING :
-                return GHPullRequestReviewState.PENDING;
-            case APPROVE :
-                return GHPullRequestReviewState.APPROVED;
-            case REQUEST_CHANGES :
-                return GHPullRequestReviewState.CHANGES_REQUESTED;
-            case COMMENT :
-                return GHPullRequestReviewState.COMMENTED;
-        }
-        throw new IllegalStateException();
+        return switch (this) {
+            case PENDING -> GHPullRequestReviewState.PENDING;
+            case APPROVE -> GHPullRequestReviewState.APPROVED;
+            case REQUEST_CHANGES -> GHPullRequestReviewState.CHANGES_REQUESTED;
+            case COMMENT -> GHPullRequestReviewState.COMMENTED;
+        };
     }
 }

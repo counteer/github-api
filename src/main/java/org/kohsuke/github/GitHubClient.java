@@ -151,18 +151,12 @@ class GitHubClient {
 
     // This implements the exact same rules as the ones applied in jdk.internal.net.http.RedirectFilter
     private static String getRedirectedMethod(int statusCode, String originalMethod) {
-        switch (statusCode) {
-            case HTTP_MOVED_PERM :
-            case HTTP_MOVED_TEMP :
-                return originalMethod.equals("POST") ? "GET" : originalMethod;
-            case 303 :
-                return "GET";
-            case 307 :
-            case 308 :
-                return originalMethod;
-            default :
-                return originalMethod;
-        }
+        return switch (statusCode) {
+            case HTTP_MOVED_PERM, HTTP_MOVED_TEMP -> originalMethod.equals("POST") ? "GET" : originalMethod;
+            case 303 -> "GET";
+            case 307, 308 -> originalMethod;
+            default -> originalMethod;
+        };
     }
 
     private static URI getRedirectedUri(URI requestUri, GitHubConnectorResponse connectorResponse) throws IOException {
@@ -280,7 +274,7 @@ class GitHubClient {
                 builder.contentType("application/json");
                 Map<String, Object> json = new HashMap<>();
                 for (GitHubRequest.Entry e : request.args()) {
-                    json.put(e.key, e.value);
+                    json.put(e.key(), e.value());
                 }
                 builder.with(new ByteArrayInputStream(getMappingObjectWriter().writeValueAsBytes(json)));
             }
@@ -352,8 +346,8 @@ class GitHubClient {
             injected.put(GitHubConnectorResponse.class.getName(), connectorResponse);
             GitHubConnectorRequest request = connectorResponse.request();
             // This is cheating, but it is an acceptable cheat for now.
-            if (request instanceof GitHubRequest) {
-                injected.putAll(((GitHubRequest) connectorResponse.request()).injectedMappingValues());
+            if (request instanceof GitHubRequest gitHubRequest) {
+                injected.putAll(gitHubRequest.injectedMappingValues());
             }
         }
         return MAPPER.reader(new InjectableValues.Std(injected));
@@ -932,11 +926,8 @@ class GitHubClient {
      */
     String getLogin() {
         try {
-            if (this.authorizationProvider instanceof UserAuthorizationProvider
+            if (this.authorizationProvider instanceof UserAuthorizationProvider userAuthorizationProvider
                     && this.authorizationProvider.getEncodedAuthorization() != null) {
-
-                UserAuthorizationProvider userAuthorizationProvider = (UserAuthorizationProvider) this.authorizationProvider;
-
                 return userAuthorizationProvider.getLogin();
             }
         } catch (IOException e) {

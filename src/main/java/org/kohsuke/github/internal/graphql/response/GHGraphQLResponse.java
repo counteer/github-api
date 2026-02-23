@@ -43,12 +43,7 @@ public class GHGraphQLResponse<T> {
      */
     @SuppressFBWarnings(value = { "UWF_UNWRITTEN_FIELD", "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" },
             justification = "JSON API")
-    private static class GraphQLError {
-        private String message;
-
-        public String getMessage() {
-            return message;
-        }
+    private record GraphQLError(@JsonProperty("message") String message) {
     }
 
     private final T data;
@@ -92,7 +87,7 @@ public class GHGraphQLResponse<T> {
      * @return GraphQL error messages from Github Response. Empty list when no errors occurred.
      */
     public List<String> getErrorMessages() {
-        return errors.stream().map(GraphQLError::getMessage).collect(Collectors.toList());
+        return errors.stream().map(GraphQLError::message).collect(Collectors.toList());
     }
 
     /**

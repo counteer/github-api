@@ -11,6 +11,7 @@ For changes after v1.101 see the [GitHub Releases page](https://github.com/hub4j
 - Migrate tests from JUnit 4 APIs to JUnit 5 annotations/assertions/assumptions across the test suite.
 - Update test infrastructure for JUnit 5 lifecycle execution (wiremock/payload rule handling adjustments).
 - Update test dependencies to support migrated JUnit 5 + Hamcrest usage.
+- Apply Java 21 syntax modernization in main code (switch expressions, `instanceof` pattern matching, and internal record usage).
 
 ## [github-api-1.101](https://github.com/hub4j/github-api/tree/github-api-1.101) (2019-11-27)
 

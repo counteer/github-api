@@ -61,11 +61,7 @@ public class GHEmail {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GHEmail) {
-            GHEmail that = (GHEmail) obj;
-            return this.email.equals(that.email);
-        }
-        return false;
+        return obj instanceof GHEmail that && this.email.equals(that.email);
     }
 
     /**

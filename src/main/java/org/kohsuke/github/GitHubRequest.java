@@ -41,26 +41,7 @@ public class GitHubRequest implements GitHubConnectorRequest {
     /**
      * The Class Entry.
      */
-    protected static class Entry {
-
-        /** The key. */
-        final String key;
-
-        /** The value. */
-        final Object value;
-
-        /**
-         * Instantiates a new entry.
-         *
-         * @param key
-         *            the key
-         * @param value
-         *            the value
-         */
-        protected Entry(String key, Object value) {
-            this.key = key;
-            this.value = value;
-        }
+    protected record Entry(String key, Object value) {
     }
 
     /**
@@ -246,7 +227,7 @@ public class GitHubRequest implements GitHubConnectorRequest {
          */
         public B remove(String key) {
             for (int index = 0; index < args.size();) {
-                if (args.get(index).key.equals(key)) {
+                if (args.get(index).key().equals(key)) {
                     args.remove(index);
                 } else {
                     index++;
@@ -809,9 +790,9 @@ public class GitHubRequest implements GitHubConnectorRequest {
 
                 for (Iterator<Entry> it = args.listIterator(); it.hasNext();) {
                     Entry arg = it.next();
-                    argString.append(URLEncoder.encode(arg.key, StandardCharsets.UTF_8.name()));
+                    argString.append(URLEncoder.encode(arg.key(), StandardCharsets.UTF_8.name()));
                     argString.append('=');
-                    argString.append(URLEncoder.encode(arg.value.toString(), StandardCharsets.UTF_8.name()));
+                    argString.append(URLEncoder.encode(arg.value().toString(), StandardCharsets.UTF_8.name()));
                     if (it.hasNext()) {
                         argString.append('&');
                     }

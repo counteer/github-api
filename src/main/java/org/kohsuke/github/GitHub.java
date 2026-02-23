@@ -112,8 +112,8 @@ public class GitHub {
             this.authorizationProvider = authorizationProvider;
 
             // no dependent authorization providers nest like this currently, but they might in future
-            if (authorizationProvider instanceof DependentAuthorizationProvider) {
-                ((DependentAuthorizationProvider) authorizationProvider).bind(this);
+            if (authorizationProvider instanceof DependentAuthorizationProvider dependentAuthorizationProvider) {
+                dependentAuthorizationProvider.bind(this);
             }
         }
 
@@ -389,11 +389,10 @@ public class GitHub {
             GitHubAbuseLimitHandler abuseLimitHandler,
             GitHubRateLimitChecker rateLimitChecker,
             AuthorizationProvider authorizationProvider) throws IOException {
-        if (authorizationProvider instanceof DependentAuthorizationProvider) {
-            ((DependentAuthorizationProvider) authorizationProvider).bind(this);
+        if (authorizationProvider instanceof DependentAuthorizationProvider dependentAuthorizationProvider) {
+            dependentAuthorizationProvider.bind(this);
         } else if (authorizationProvider instanceof ImmutableAuthorizationProvider
-                && authorizationProvider instanceof UserAuthorizationProvider) {
-            UserAuthorizationProvider provider = (UserAuthorizationProvider) authorizationProvider;
+                && authorizationProvider instanceof UserAuthorizationProvider provider) {
             if (provider.getLogin() == null && provider.getEncodedAuthorization() != null
                     && provider.getEncodedAuthorization().startsWith("token")) {
                 authorizationProvider = new LoginLoadingUserAuthorizationProvider(provider, this);
@@ -412,8 +411,8 @@ public class GitHub {
 
         // Ensure we have the login if it is available
         // This preserves previously existing behavior. Consider removing in future.
-        if (authorizationProvider instanceof LoginLoadingUserAuthorizationProvider) {
-            ((LoginLoadingUserAuthorizationProvider) authorizationProvider).getLogin();
+        if (authorizationProvider instanceof LoginLoadingUserAuthorizationProvider loginLoadingUserAuthorizationProvider) {
+            loginLoadingUserAuthorizationProvider.getLogin();
         }
     }
 

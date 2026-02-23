@@ -154,8 +154,8 @@ public abstract class PagedIterable<T> implements Iterable<T> {
         } catch (GHException e) {
             // if there was an exception inside the iterator it is wrapped as a GHException
             // if the wrapped exception is an IOException, throw that
-            if (e.getCause() instanceof IOException) {
-                throw (IOException) e.getCause();
+            if (e.getCause() instanceof IOException ioException) {
+                throw ioException;
             } else {
                 throw e;
             }

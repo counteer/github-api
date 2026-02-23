@@ -1,5 +1,6 @@
 package org.kohsuke.github;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.net.URL;
@@ -19,10 +20,8 @@ public class GHAuthorization extends GHObject {
 
     @SuppressFBWarnings(value = { "UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD", "UWF_UNWRITTEN_FIELD" },
             justification = "JSON API")
-    private static class App {
-        private String name;
+    private record App(@JsonProperty("name") String name, @JsonProperty("url") String url) {
         // private String client_id; not yet used
-        private String url;
     }
 
     /** The Constant ADMIN_KEY. */
@@ -102,7 +101,7 @@ public class GHAuthorization extends GHObject {
      * @return the app name
      */
     public String getAppName() {
-        return app.name;
+        return app.name();
     }
 
     /**
@@ -111,7 +110,7 @@ public class GHAuthorization extends GHObject {
      * @return the app url
      */
     public URL getAppUrl() {
-        return GitHubClient.parseURL(app.url);
+        return GitHubClient.parseURL(app.url());
     }
 
     /**

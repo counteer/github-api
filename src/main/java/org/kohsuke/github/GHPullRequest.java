@@ -723,7 +723,7 @@ public class GHPullRequest extends GHIssue implements Refreshable {
     private void addParameter(StringBuilder inputBuilder, String name, Object value) {
         Objects.requireNonNull(value);
         String formatString = " %s: \"%s\"";
-        if (value instanceof Enum) {
+        if (value instanceof Enum<?>) {
             formatString = " %s: %s";
         }
 

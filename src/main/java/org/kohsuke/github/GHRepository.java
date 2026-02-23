@@ -240,13 +240,11 @@ public class GHRepository extends GHObject {
     }
 
     // Only used within listCodeownersErrors().
-    private static class GHCodeownersErrors {
-        List<GHCodeownersError> errors;
+    private record GHCodeownersErrors(@JsonProperty("errors") List<GHCodeownersError> errors) {
     }
 
     // Only used within listTopics().
-    private static class Topics {
-        List<String> names;
+    private record Topics(@JsonProperty("names") List<String> names) {
     }
 
     static class GHRepoPermission {
@@ -1079,11 +1077,9 @@ public class GHRepository extends GHObject {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GHRepository) {
-            GHRepository that = (GHRepository) obj;
-            return this.getOwnerName().equals(that.getOwnerName()) && this.name.equals(that.name);
-        }
-        return false;
+        return obj instanceof GHRepository that
+                && this.getOwnerName().equals(that.getOwnerName())
+                && this.name.equals(that.name);
     }
 
     /**
@@ -2591,7 +2587,7 @@ public class GHRepository extends GHObject {
     public List<GHCodeownersError> listCodeownersErrors() throws IOException {
         return root().createRequest()
                 .withUrlPath(getApiTailUrl("codeowners/errors"))
-                .fetch(GHCodeownersErrors.class).errors;
+                .fetch(GHCodeownersErrors.class).errors();
     }
 
     /**
@@ -2793,8 +2789,8 @@ public class GHRepository extends GHObject {
         HashMap<String, Long> result = new HashMap<>();
         root().createRequest().withUrlPath(getApiTailUrl("languages")).fetch(HashMap.class).forEach((key, value) -> {
             Long addValue = -1L;
-            if (value instanceof Integer) {
-                addValue = Long.valueOf((Integer) value);
+            if (value instanceof Integer intValue) {
+                addValue = Long.valueOf(intValue);
             }
             result.put(key.toString(), addValue);
         });
@@ -2952,7 +2948,7 @@ public class GHRepository extends GHObject {
      */
     public List<String> listTopics() throws IOException {
         Topics topics = root().createRequest().withUrlPath(getApiTailUrl("topics")).fetch(Topics.class);
-        return topics.names;
+        return topics.names();
     }
 
     /**

@@ -38,8 +38,7 @@ class EnterpriseManagedSupport {
     }
 
     Optional<GHException> filterException(final GHException e) {
-        if (e.getCause() instanceof HttpException) {
-            final HttpException he = (HttpException) e.getCause();
+        if (e.getCause() instanceof HttpException he) {
             return filterException(he, COULD_NOT_RETRIEVE_ORGANIZATION_EXTERNAL_GROUPS)
                     .map(translated -> new GHException(COULD_NOT_RETRIEVE_ORGANIZATION_EXTERNAL_GROUPS, translated));
         }
